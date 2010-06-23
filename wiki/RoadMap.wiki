@@ -1,0 +1,23 @@
+#summary One-sentence summary of this page.
+#labels Phase-Design
+
+= Road Map =
+
+== Version 1.0 ==
+
+
+= Details =
+
+Looking to do the following:
+  * Loading/Saving of Various "Standard" Life file formats
+  * Maybe a simple Windows installer, though no installation is (yet) required.
+
+== Versions beyond ==
+
+
+= Details =
+
+Things to think about
+  * Add solution file for Visual Studio 2010
+  * Solution/Projects for SharpDevelop, or just let it load the Visual Studio solution.
+  * Mono
