@@ -1,5 +1,5 @@
 #labels Phase-Design
-#SharpLife Road Map
+#Sharp Life Road Map
 
 = Road Map =
 
@@ -19,5 +19,5 @@ Looking to do the following:
 
 Things to think about
   * Add solution file for Visual Studio 2010
-  * Solution/Projects for SharpDevelop, or just let it load the Visual Studio solution.
+  * Solution/Projects for Sharp Develop, or just let it load the Visual Studio solution.
   * Mono
