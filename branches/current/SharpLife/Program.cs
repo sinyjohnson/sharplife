@@ -19,7 +19,7 @@
 using System;
 using System.Windows.Forms;
 
-namespace Life
+namespace SharpLife
 {
     static class Program
     {

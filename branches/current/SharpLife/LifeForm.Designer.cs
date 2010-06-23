@@ -1,4 +1,4 @@
-﻿namespace Life
+﻿namespace SharpLife
 {
     partial class LifeForm
     {

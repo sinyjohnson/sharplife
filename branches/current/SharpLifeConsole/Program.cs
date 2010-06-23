@@ -22,7 +22,7 @@ using System.Timers;
 using SimEngine;
 using Timer = System.Timers.Timer;
 
-namespace LifeConsole
+namespace SharpLifeConsole
 {
     class Program
     {
