@@ -46,26 +46,88 @@ namespace SharpLifeConsole
         /// Application entry point
         /// 
         /// Usage:
-        ///     SharpLifeConsole
-        ///     TODO Add command line options
-        /// 
+        ///     SharpLifeConsole [-engine engine name] [-width n] [-height n] [-mode p|r] [-file file name] [-help/?]
+        ///         -engine EngineType, Engine1 ...
+        ///         -width  number, if number is greater than the maximum console size, then maximum console size is used
+        ///         -height number, if number is greater than the maximum console size, then maximum console size is used
+        ///         -mode   p=paused r=running
+        ///         -file   file name of a supported life file pattern
+        ///         -help/? Display usage
         /// </summary>
         static void Main(string[] args)
         {
             #region Setup
 
-            CommandLineProcessor.ProcessCommandLine(args, true);
-
+            // Set defaults. Can be changed by command line parameters
             _step = false;
             _screenWidth = Console.LargestWindowWidth - 10;
             _screenHeight = Console.LargestWindowHeight - 10;
+
+            #region Process Command Line
+
+            CommandLineProcessor.ProcessCommandLine(args, true);
+
+            // Help
+            if (CommandLineProcessor.ParameterExits("help") || CommandLineProcessor.ParameterExits("?"))
+            {
+                Usage();
+                return;
+            }
+
+            // Width
+            if (CommandLineProcessor.ParameterExits("width"))
+            {
+                int width = Convert.ToInt32(CommandLineProcessor.Value("width"));
+                if (width <= (Console.LargestWindowWidth - 10) )
+                    _screenWidth = width;
+            }
+
+            // Height
+            if (CommandLineProcessor.ParameterExits("height"))
+            {
+                int height = Convert.ToInt32(CommandLineProcessor.Value("height"));
+                if (height <= (Console.LargestWindowHeight - 10))
+                    _screenHeight = height;
+            }
+
+            // Mode
+            if (CommandLineProcessor.ParameterExits("mode"))
+                _step = CommandLineProcessor.Value("mode") == "p" ? true : false;
+
+            // Engine
+            if (CommandLineProcessor.ParameterExits("engine"))
+            {
+                switch (CommandLineProcessor.Value("engine").ToLower())
+                {
+                    case "engine1": _engine = CreateEngine(EngineType.Engine1, _screenWidth, _screenHeight - 2); break;
+                    case "engine2": _engine = CreateEngine(EngineType.Engine2, _screenWidth, _screenHeight - 2); break;
+                    case "engine3": _engine = CreateEngine(EngineType.Engine3, _screenWidth, _screenHeight - 2); break;
+                    default: _engine = CreateEngine(EngineType.Engine1, _screenWidth, _screenHeight - 2); break;
+                }
+            }
+            else
+                _engine = CreateEngine(EngineType.Engine1, _screenWidth, _screenHeight - 2);
+
+            // File
+            try
+            {
+                FileObject.Load(CommandLineProcessor.Value("file"), _engine);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Exception processing the given file");
+                Console.WriteLine(ex);
+                return;
+            }
+
+            #endregion
+
             Console.WindowWidth = _screenWidth;
             Console.WindowHeight = _screenHeight;
             Console.CursorVisible = false;
-            _engine = CreateEngine(EngineType.Engine1, _screenWidth, _screenHeight - 2);
 
             // Select a pre-defined pattern
-            _engine.CreateBrokenLine();
+            //_engine.CreateBrokenLine();
             //_engine.CreateOooPattern();
             //_engine.CreateSquare();
 
@@ -238,5 +300,17 @@ namespace SharpLifeConsole
         }
 
         #endregion
+
+        #region Method: Usage
+
+        /// <summary>
+        /// Display command line usage
+        /// </summary>
+        private static void Usage()
+        {
+            
+        }
+
+        #endregion:
     }
 }

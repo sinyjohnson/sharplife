@@ -13,6 +13,10 @@ See http://en.wikipedia.org/wiki/Conway's_Game_of_Life
 This simulator implements what has been defined as Rule B3/S23, which is the classic life algorithm rules.
 Defined at: http://en.wikipedia.org/wiki/Conway's_Game_of_Life#Variations_on_Life
 
+ The Life field for the engines are currently defined where the left and right edges of the field 
+ are stitched together, and the top and bottom edges are also, yielding a toroidal http://en.wikipedia.org/wiki/Torus
+ array. The result is that active areas that move across a field edge reappear at the opposite edge.
+
 This Microsoft Visual Studio 2008 solution consists of 3 projects.
 
 	Life

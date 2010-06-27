@@ -207,7 +207,7 @@ namespace SimEngine
 
         #region Properties
 
-        public int[,] Cells;
+        public int[,] _cells;
 
         #endregion
 
@@ -220,7 +220,7 @@ namespace SimEngine
         /// <param name="height"></param>
         public Engine1(int width, int height) : base(width, height)
         {
-            Cells = new int[Width, Height];
+            _cells = new int[Width, Height];
             _workCells = new int[Width, Height];
 
             // 80*25 = 2000
@@ -260,7 +260,7 @@ namespace SimEngine
         /// <param name="alive"></param>
         public override void SetCell(int x, int y, bool alive)
         {
-            Cells[x, y] = alive ? 1 : 0;
+            _cells[x, y] = alive ? 1 : 0;
         }
 
         #endregion
@@ -275,7 +275,7 @@ namespace SimEngine
         /// <returns></returns>
         public override bool GetCell(int x, int y)
         {
-            return Cells[x, y] == 1 ? true : false;
+            return _cells[x, y] == 1 ? true : false;
         }
 
         #endregion
@@ -292,7 +292,7 @@ namespace SimEngine
             string rowStr = string.Empty;
 
             for (int x = 0; x < Width; x++)
-                rowStr += Cells[x, row] == 1 ? "O" : " ";
+                rowStr += _cells[x, row] == 1 ? "O" : " ";
 
             return rowStr;
         }
@@ -322,7 +322,7 @@ namespace SimEngine
                     int neighbours = CountNeighbors(x, y);
 
                     // Live cell
-                    if (Cells[x,y] == 1)
+                    if (_cells[x,y] == 1)
                     {
                         // Any live cell with fewer than two live neighbours dies, as if caused by underpopulation.
                         // Any live cell with more than three live neighbours dies, as if by overcrowding.
@@ -340,7 +340,7 @@ namespace SimEngine
             }
 
             // C# is week with multi-dimensional arrays, copy the hard way
-            CopyCells(_workCells, Cells, Width, Height);
+            CopyCells(_workCells, _cells, Width, Height);
 
             _timer.Stop();
             TotalTime += _timer.Duration;
@@ -377,8 +377,8 @@ namespace SimEngine
             int posX = (x + 1) % Width;
             int negY = (y - 1 + Height) % (Height);
             int posY = (y + 1) % Height;
-            return Cells[negX, negY] + Cells[x, negY] + Cells[posX, negY] + Cells[posX, y] +
-                   Cells[posX, posY] + Cells[x, posY] + Cells[negX, posY] + Cells[negX, y];
+            return _cells[negX, negY] + _cells[x, negY] + _cells[posX, negY] + _cells[posX, y] +
+                   _cells[posX, posY] + _cells[x, posY] + _cells[negX, posY] + _cells[negX, y];
         }
 
         #endregion
