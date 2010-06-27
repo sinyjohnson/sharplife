@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
-    <ProductVersion>9.0.21022</ProductVersion>
+    <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{0018BD8B-94E8-4B4A-86C5-72C5C3EDB474}</ProjectGuid>
     <OutputType>Exe</OutputType>
@@ -51,6 +51,10 @@
     <ProjectReference Include="..\SimEngine\SimEngine.csproj">
       <Project>{FA7A38D4-48C3-4FBE-AB9B-B5C310B99141}</Project>
       <Name>SimEngine</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Utility\Utility.csproj">
+      <Project>{29F961F8-A9FA-4E6E-A509-9D71356F53BE}</Project>
+      <Name>Utility</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -19,6 +19,7 @@
 using System;
 using System.Timers;
 using SimEngine;
+using Utility;
 using Timer = System.Timers.Timer;
 
 namespace SpeedTestConsole
@@ -41,10 +42,10 @@ namespace SpeedTestConsole
         #region Method: Main
 
         /// <summary>
-        /// Usage: SpeedTestConsole [engine name]
-        ///        engine name Optional engine name. If none given, then Engine1 is used.
-        ///                    Engine names are in the format EngineN where N is an integer.
-        ///                    If a given engine number does not esist, the application exists.
+        /// Usage: SpeedTestConsole -engine [engine name]
+        ///        -engine  Optional engine name. If none given, then Engine1 is used.
+        ///                 Engine names are in the format EngineN where N is an integer.
+        ///                 If a given engine number does not esist, the application exists.
         /// </summary>
         /// <param name="args"></param>
         static void Main(string[] args)
@@ -57,14 +58,16 @@ namespace SpeedTestConsole
 
             #region Command Line Processing
 
+            CommandLineProcessor.ProcessCommandLine(args);
+
             // Create the engine given or the default
-            if (args.Length > 0)
+            if (CommandLineProcessor.ParameterExits("engine"))
             {
-                switch (args[0].ToLower())
+                switch (CommandLineProcessor.Value("engine"))
                 {
-                    case "engine1": _engine = CreateEngine(EngineType.Engine1, WIDTH, HEIGHT);  break;
-                    case "engine2": _engine = CreateEngine(EngineType.Engine2, WIDTH, HEIGHT);  break;
-                    case "engine3": _engine = CreateEngine(EngineType.Engine3, WIDTH, HEIGHT);  break;
+                    case "engine1": _engine = CreateEngine(EngineType.Engine1, WIDTH, HEIGHT); break;
+                    case "engine2": _engine = CreateEngine(EngineType.Engine2, WIDTH, HEIGHT); break;
+                    case "engine3": _engine = CreateEngine(EngineType.Engine3, WIDTH, HEIGHT); break;
                 }
             }
             else

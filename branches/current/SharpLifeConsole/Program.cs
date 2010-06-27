@@ -20,6 +20,7 @@ using System;
 using System.Threading;
 using System.Timers;
 using SimEngine;
+using Utility;
 using Timer = System.Timers.Timer;
 
 namespace SharpLifeConsole
@@ -44,9 +45,11 @@ namespace SharpLifeConsole
         /// <summary>
         /// Application entry point
         /// </summary>
-        static void Main(/*string[] args*/)
+        static void Main(string[] args)
         {
             #region Setup
+
+            CommandLineProcessor.ProcessCommandLine(args);
 
             _step = false;
             _screenWidth = Console.LargestWindowWidth - 10;
