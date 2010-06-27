@@ -126,11 +126,6 @@ namespace SharpLifeConsole
             Console.WindowHeight = _screenHeight;
             Console.CursorVisible = false;
 
-            // Select a pre-defined pattern
-            //_engine.CreateBrokenLine();
-            //_engine.CreateOooPattern();
-            //_engine.CreateSquare();
-
             RenderBoard();
 
             // Start rendering timer
