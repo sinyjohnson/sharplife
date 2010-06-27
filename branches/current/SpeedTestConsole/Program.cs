@@ -58,16 +58,17 @@ namespace SpeedTestConsole
 
             #region Command Line Processing
 
-            CommandLineProcessor.ProcessCommandLine(args);
+            CommandLineProcessor.ProcessCommandLine(args, true);
 
             // Create the engine given or the default
             if (CommandLineProcessor.ParameterExits("engine"))
             {
-                switch (CommandLineProcessor.Value("engine"))
+                switch (CommandLineProcessor.Value("engine").ToLower())
                 {
                     case "engine1": _engine = CreateEngine(EngineType.Engine1, WIDTH, HEIGHT); break;
                     case "engine2": _engine = CreateEngine(EngineType.Engine2, WIDTH, HEIGHT); break;
                     case "engine3": _engine = CreateEngine(EngineType.Engine3, WIDTH, HEIGHT); break;
+                    default: _engine = CreateEngine(EngineType.Engine1, WIDTH, HEIGHT); break;
                 }
             }
             else

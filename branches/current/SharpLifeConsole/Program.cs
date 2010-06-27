@@ -44,12 +44,17 @@ namespace SharpLifeConsole
 
         /// <summary>
         /// Application entry point
+        /// 
+        /// Usage:
+        ///     SharpLifeConsole
+        ///     TODO Add command line options
+        /// 
         /// </summary>
         static void Main(string[] args)
         {
             #region Setup
 
-            CommandLineProcessor.ProcessCommandLine(args);
+            CommandLineProcessor.ProcessCommandLine(args, true);
 
             _step = false;
             _screenWidth = Console.LargestWindowWidth - 10;
