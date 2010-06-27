@@ -25,37 +25,139 @@ namespace SpeedTestConsole
 {
     class Program
     {
-        private static Engine1 _engine;
+        #region Fields
+
+        private static LifeEngine _engine;
         private static Timer _timer1Sec;
+        private const double ONE_SECOND = 500;
         private const int WIDTH = 100;
         private const int HEIGHT = 100;
         private const int NUM_CELLS = WIDTH*HEIGHT;
+        private static bool _pause;
+        private static bool _exit;
 
+        #endregion
+
+        #region Method: Main
+
+        /// <summary>
+        /// Usage: SpeedTestConsole [engine name]
+        ///        engine name Optional engine name. If none given, then Engine1 is used.
+        ///                    Engine names are in the format EngineN where N is an integer.
+        ///                    If a given engine number does not esist, the application exists.
+        /// </summary>
+        /// <param name="args"></param>
         static void Main(string[] args)
         {
-            _engine = new Engine1(WIDTH, HEIGHT);
-            _timer1Sec = new Timer { Interval = 500 };
-            _timer1Sec.Elapsed += CalculateCellsPerSecond;
+            _pause = true;
+            _exit = false;
+            _timer1Sec = new Timer { Interval = ONE_SECOND };
+            _timer1Sec.Elapsed += CellsPerSecond;
             _timer1Sec.Start();
 
-            while (true)
+            #region Command Line Processing
+
+            // Create the engine given or the default
+            if (args.Length > 0)
             {
-                _engine.NextGeneration();
+                switch (args[0].ToLower())
+                {
+                    case "engine1": _engine = CreateEngine(EngineType.Engine1, WIDTH, HEIGHT);  break;
+                    case "engine2": _engine = CreateEngine(EngineType.Engine2, WIDTH, HEIGHT);  break;
+                    case "engine3": _engine = CreateEngine(EngineType.Engine3, WIDTH, HEIGHT);  break;
+                }
+            }
+            else
+                _engine = CreateEngine(EngineType.Engine1, WIDTH, HEIGHT);
+
+            #endregion
+
+            Console.CursorVisible = false;
+            Console.WriteLine("Press the 'p' key to start and/or pause. 'x' to exit");
+
+            while (!_exit)
+            {
+                if (!_pause)
+                    _engine.NextGeneration();
+
+                CheckInput();
+            }
+
+            Console.CursorVisible = true;
+        }
+
+        #endregion
+
+        #region Method: CreateEngine
+
+        /// <summary>
+        /// Create and return the given Life Engine Type
+        /// </summary>
+        /// <param name="engine"></param>
+        /// <param name="width"></param>
+        /// <param name="height"></param>
+        private static LifeEngine CreateEngine(EngineType engine, int width, int height)
+        {
+            switch (engine)
+            {
+                case EngineType.Engine2: return new Engine2(width, height);
+                case EngineType.Engine3: return new Engine3(width, height);
+                default: return new Engine1(width, height);
             }
         }
 
+        #endregion
+
+        #region Method: CellsPerSecond
+
         /// <summary>
-        /// cellsPerSecond = 1,400,000 1.5 million on average
+        /// cellsPerSecond = 1,400,000 1.4 million on average
+        /// 150 Generations per second
         /// </summary>
         /// <param name="o"></param>
         /// <param name="e"></param>
-        static void CalculateCellsPerSecond(object o, ElapsedEventArgs e)
+        static void CellsPerSecond(object o, ElapsedEventArgs e)
         {
             _timer1Sec.Stop();
-            int cellsPerSecond = NUM_CELLS * _engine.Generation;
-            Console.WriteLine("Cells Per Second: " + cellsPerSecond + " Generations: " + _engine.Generation);
-            _engine.Generation = 0;
+            {
+                if (!_pause)
+                {
+                    int cellsPerSecond = NUM_CELLS * _engine.Generation;
+
+                    Console.SetCursorPosition(0, 3);
+                    Console.Write("Engine:                 " + _engine.GetType());
+
+                    Console.SetCursorPosition(0, 4);
+                    Console.Write("Cells Per Second:       " + cellsPerSecond);
+
+                    Console.SetCursorPosition(0, 5);
+                    Console.Write("Generations Per Second: " + _engine.Generation);
+
+                    _engine.Generation = 0;
+                }
+            }
             _timer1Sec.Start();
         }
+
+        #endregion
+
+        #region Method: CheckInput
+
+        /// <summary>
+        /// Process any keyboard input we care about
+        /// </summary>
+        private static void CheckInput()
+        {
+            if (!Console.KeyAvailable) return;
+
+            ConsoleKeyInfo key = Console.ReadKey(true);
+            switch (key.KeyChar)
+            {
+                case 'x':   _exit = true;       break;
+                case 'p':   _pause = !_pause;   break;
+            }
+        }
+
+        #endregion
     }
 }

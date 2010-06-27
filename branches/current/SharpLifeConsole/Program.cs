@@ -75,7 +75,13 @@ namespace SharpLifeConsole
             while (true)
             {
                 CheckInput();
-                if (_exit) return;
+
+                if (_exit)
+                {
+                    Console.CursorVisible = true;
+                    return;
+                }
+
                 if (_step && _stepNow)
                 {
                     Render();
@@ -92,7 +98,7 @@ namespace SharpLifeConsole
         #region Method: CreateEngine
 
         /// <summary>
-        /// Create the given Life Engine Type
+        /// Create and return the given Life Engine Type
         /// </summary>
         /// <param name="engine"></param>
         /// <param name="width"></param>
