@@ -25,74 +25,32 @@ namespace SharpLife
 {
     public partial class LifeForm : Form
     {
+        #region Fields
+
         private static LifeEngine _engine;
+        private static Panel _lifeWindow;
         private static readonly Timer _timer = new Timer();
         readonly Pen _pen = new Pen(Color.Red);
         private bool _mouseDown = false;
 
+        #endregion
+
+        #region Constructor
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
         public LifeForm()
         {
             InitializeComponent();
 
+            _lifeWindow = lifeWindow;
             _engine = CreateEngine(EngineType.Engine1, lifeWindow.Width, lifeWindow.Height);
-
-            #region Random
-
-            Random rnd = new Random((int)DateTime.Now.Ticks);
-            for (int i = 0; i < 30000; i++)
-                _engine.SetCell(rnd.Next(1, lifeWindow.Width-1), rnd.Next(1, lifeWindow.Height-1), true);
-
-            #endregion
-
-            #region One cell high broken line supposed to exhibt infinte growth
-
-            //int x = 5;
-            //for (int y = 10; y < 300; y += 20)
-            //{
-            //    _engine.SetCell(x, y, true);
-            //    _engine.SetCell(x + 1, y, true);
-            //    _engine.SetCell(x + 2, y, true);
-            //    _engine.SetCell(x + 3, y, true);
-            //    _engine.SetCell(x + 4, y, true);
-            //    _engine.SetCell(x + 5, y, true);
-            //    _engine.SetCell(x + 6, y, true);
-            //    _engine.SetCell(x + 7, y, true);
-
-            //    _engine.SetCell(x + 9, y, true);
-            //    _engine.SetCell(x + 10, y, true);
-            //    _engine.SetCell(x + 11, y, true);
-            //    _engine.SetCell(x + 12, y, true);
-            //    _engine.SetCell(x + 13, y, true);
-
-            //    _engine.SetCell(x + 17, y, true);
-            //    _engine.SetCell(x + 18, y, true);
-            //    _engine.SetCell(x + 19, y, true);
-
-            //    _engine.SetCell(x + 26, y, true);
-            //    _engine.SetCell(x + 27, y, true);
-            //    _engine.SetCell(x + 28, y, true);
-            //    _engine.SetCell(x + 29, y, true);
-            //    _engine.SetCell(x + 30, y, true);
-            //    _engine.SetCell(x + 31, y, true);
-            //    _engine.SetCell(x + 32, y, true);
-
-            //    _engine.SetCell(x + 34, y, true);
-            //    _engine.SetCell(x + 35, y, true);
-            //    _engine.SetCell(x + 36, y, true);
-            //    _engine.SetCell(x + 37, y, true);
-            //    _engine.SetCell(x + 38, y, true);
-
-            //    x += 20;
-            //}
-
-            #endregion
-
-            lifeWindow.Invalidate();
-
             _timer.Tick += TimerEventProcessor;
             _timer.Interval = 60;
-            _timer.Start();
         }
+
+        #endregion
 
         #region Method: CreateEngine
 
@@ -114,12 +72,92 @@ namespace SharpLife
 
         #endregion
 
+        #region Menu Item Events
+
+        private void NewToolStripMenuItemClick(object sender, EventArgs e)
+        {
+            NewLife();
+        }
+
+        private void OpenToolStripMenuItemClick(object sender, EventArgs e)
+        {
+            OpenFile();
+        }
+
+        private void SaveToolStripMenuItemClick(object sender, EventArgs e)
+        {
+            SaveFile();
+        }
+
+        private void SaveAsToolStripMenuItemClick(object sender, EventArgs e)
+        {
+            SaveFile();
+        }
+
+        private void ExitToolStripMenuItemClick(object sender, EventArgs e)
+        {
+            Exit();
+        }
+
+        private void RunToolStripMenuItemClick(object sender, EventArgs e)
+        {
+            Run();
+        }
+
+        private void PauseToolStripMenuItemClick(object sender, EventArgs e)
+        {
+            Pause();
+        }
+
+        private void StepToolStripMenuItemClick(object sender, EventArgs e)
+        {
+            Step();
+        }
+
+        #endregion
+
+        #region Toolbar Events
+
+        private void NewToolStripButtonClick(object sender, EventArgs e)
+        {
+            NewLife();
+        }
+
+        private void OpenToolStripButtonClick(object sender, EventArgs e)
+        {
+            OpenFile();
+        }
+
+        private void SaveToolStripButtonClick(object sender, EventArgs e)
+        {
+            SaveFile();
+        }
+
+        private void ToolStripButtonRunClick(object sender, EventArgs e)
+        {
+            Run();
+        }
+
+        private void ToolStripButtonPauseClick(object sender, EventArgs e)
+        {
+            Pause();
+        }
+
+        private void ToolStripButtonStepClick(object sender, EventArgs e)
+        {
+            Step();
+        }
+
+        #endregion
+
+        #region Other Events
+
         private static void TimerEventProcessor(Object myObject, EventArgs myEventArgs)
         {
             _timer.Stop();
             {
                 _engine.NextGeneration();
-                lifeWindow.Invalidate();
+                _lifeWindow.Invalidate();
             }
             _timer.Start();
         }
@@ -155,7 +193,59 @@ namespace SharpLife
 
         private void LifeWindowMouseMove(object sender, MouseEventArgs e)
         {
-            
+
         }
+
+        #endregion
+
+        #region Private Methods
+
+        private static void NewLife()
+        {
+            throw new NotImplementedException();
+        }
+
+        private static void OpenFile()
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog {Filter = @"RLE Files|*.rle"};
+
+            try
+            {
+                if (openFileDialog.ShowDialog() == DialogResult.OK)
+                    FileObject.Load(openFileDialog.FileName, _engine);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(Properties.Settings.Default.FILE_READ_EXCEPTION + @" " + ex);
+            }
+        }
+
+        private static void SaveFile()
+        {
+            throw new NotImplementedException();
+        }
+
+        private void Exit()
+        {
+            Close();
+        }
+
+        private void Run()
+        {
+            lifeWindow.Invalidate();
+            _timer.Start();
+        }
+
+        private static void Pause()
+        {
+            _timer.Stop();
+        }
+
+        private static void Step()
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
     }
 }
