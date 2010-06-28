@@ -58,3 +58,12 @@ Format details: http://psoup.math.wisc.edu/mcell/ca_files_formats.html
 	All comment lines that are not CXRLE lines, and occur at the top or bottom of the file, are treated as 
 	information lines and are displayed when the user clicks the "information" button in Golly's tool bar. 
 	Any comment lines interspersed with the pattern data will not be displayed. 
+
+Faster implementations
+unbounded universe using quadtrees
+http://www.drdobbs.com/high-performance-computing/184406478;jsessionid=XM4DQWAW2JH35QE1GHRSKH4ATMY32JVN
+	Each node of the tree represents a square portion of the universe. The leaves of the tree are single bits, 
+	either 1 (alive) or 0 (dead). Each nonleaf node represents a larger square composed of four children, who 
+	are named by their direction from center: nw is the name of the northwest smaller square, ne the northeast 
+	smaller square, and so on. The level of a node is the distance to the leaves; the leaves are at level 0. 
+	A node at level n thus represents a square of size 2n on each edge.
