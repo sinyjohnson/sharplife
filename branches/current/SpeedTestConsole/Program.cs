@@ -115,8 +115,8 @@ namespace SpeedTestConsole
         #region Method: CellsPerSecond
 
         /// <summary>
-        /// cellsPerSecond = 1,400,000 1.4 million on average
-        /// 150 Generations per second
+        /// Engine1 cellsPerSecond = 1,400,000 1.4 million on average 150 Generations per second
+        /// Engine3 cellsPerSecond = 1,590,000 1.6 million on average 159 Generations per second
         /// </summary>
         /// <param name="o"></param>
         /// <param name="e"></param>

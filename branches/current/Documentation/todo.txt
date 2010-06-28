@@ -1,6 +1,36 @@
 
 This simulator implements what has been defined as Rule B3/S23, which is the classic life algorithm rules
 
+http://en.wikipedia.org/wiki/Conway's_Game_of_Life
+http://dotat.at/prog/life/life.html
+http://developer.download.nvidia.com/SDK/9.5/Samples/samples.html#GL_GameOfLife ( NVidia GeForce2 Ultra 72 million cells per second)
+http://members.tip.net.au/~dbell/ hashlife implementation
+
+Thoughts on a bit array based engine
+80*25 = 2000
+BitArray bits = new BitArray(Width*Height, false);
+
+2D to 1D (y * maxX) + x;
+1D to 2D y = n / maxX x = n % maxX
+xxxxxxxxxx xxxxxxxxxx xxxxxxxxxx xxxxxxxxxx
+xOxxxxxxxx xxxxxxxxxx xxxxxxxxxx xxxxxxxxxx
+
+OOO
+OcO = 11111111
+OOO
+
+xxx
+xcx = 00000000
+xxx
+
+Oxx
+xcx = 10000000
+xxx
+
+01000000
+00100000
+
+
 Implement a common Life file format reader/writer
 Format details: http://psoup.math.wisc.edu/mcell/ca_files_formats.html
 

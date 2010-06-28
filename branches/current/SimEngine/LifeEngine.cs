@@ -17,11 +17,8 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 
-// Other stuff to look into
-// http://dotat.at/prog/life/life.html
-// http://developer.download.nvidia.com/SDK/9.5/Samples/samples.html#GL_GameOfLife ( NVidia GeForce2 Ultra 72 million cells per second)
-// http://members.tip.net.au/~dbell/ hashlife implementation
 namespace SimEngine
 {
     #region Enum: EngineType
@@ -33,9 +30,7 @@ namespace SimEngine
     #region Class LifeEngine
 
     /// <summary>
-    /// Game Of Life Engine http://en.wikipedia.org/wiki/Conway's_Game_of_Life
-    /// 
-    /// Engine base class
+    /// Game Of Life Engine base class
     /// </summary>
     public abstract class LifeEngine
     {
@@ -74,26 +69,11 @@ namespace SimEngine
 
         #endregion
 
-        #region Method: Clear
-
-        /// <summary>
-        /// Set all cells to dead
-        /// </summary>
-        public void Clear()
-        {
-            for (int x = 0; x < Width; x++)
-            {
-                for (int y = 0; y < Height; y++)
-                    SetCell(x, y, false);
-            }
-        }
-
-        #endregion
-
         #region Abstract Methods
 
         public abstract void SetCell(int x, int y, bool alive);
         public abstract bool GetCell(int x, int y);
+        public abstract void Clear();
         public abstract string RowToString(int row);
         public abstract void NextGeneration();
 
@@ -106,25 +86,21 @@ namespace SimEngine
 
     /// <summary>
     /// Engine uses a 2 Dimensional int array
+    /// The Life field wraps around at the sides, tops and corners, i.e a toroidal array
     /// </summary>
     public class Engine1 : LifeEngine
     {
         #region Fields
 
+        private readonly int[,] _cells;
         private readonly int[,] _workCells;
-
-        #endregion
-
-        #region Properties
-
-        public int[,] _cells;
 
         #endregion
 
         #region Constructor
 
         /// <summary>
-        /// Initializes the engine
+        /// Initializes the engines Life field
         /// </summary>
         /// <param name="width"></param>
         /// <param name="height"></param>
@@ -132,30 +108,6 @@ namespace SimEngine
         {
             _cells = new int[Width, Height];
             _workCells = new int[Width, Height];
-
-            // 80*25 = 2000
-            //BitArray bits = new BitArray(Width*Height, false);
-            
-            // 2D to 1D (y * maxX) + x;
-            // 1D to 2D y = n / maxX x = n % maxX
-            // xxxxxxxxxx xxxxxxxxxx xxxxxxxxxx xxxxxxxxxx
-            // xOxxxxxxxx xxxxxxxxxx xxxxxxxxxx xxxxxxxxxx
-            //
-            // OOO
-            // OcO = 11111111
-            // OOO
-            //
-            // xxx
-            // xcx = 00000000
-            // xxx
-            //
-            // Oxx
-            // xcx = 10000000
-            // xxx
-            //
-            // 01000000
-            // 00100000
-            // 
         }
 
         #endregion
@@ -186,6 +138,25 @@ namespace SimEngine
         public override bool GetCell(int x, int y)
         {
             return _cells[x, y] == 1 ? true : false;
+        }
+
+        #endregion
+
+        #region Method: Clear
+
+        /// <summary>
+        /// Set all cells to dead
+        /// </summary>
+        public override void Clear()
+        {
+            for (int x = 0; x < Width; x++)
+            {
+                for (int y = 0; y < Height; y++)
+                {
+                    _cells[x, y] = 0;
+                    _workCells[x, y] = 0;
+                }
+            }
         }
 
         #endregion
@@ -229,7 +200,7 @@ namespace SimEngine
             {
                 for (int x = 0; x < Width; x++)
                 {
-                    int neighbours = CountNeighbors(x, y);
+                    int neighbours = CountNeighbours(x, y);
 
                     // Live cell
                     if (_cells[x,y] == 1)
@@ -258,7 +229,7 @@ namespace SimEngine
 
         #endregion
 
-        #region Method: CountNeighbors
+        #region Method: CountNeighbours
 
         /// <summary>
         /// Return the number of neighbors around the given cell
@@ -266,7 +237,7 @@ namespace SimEngine
         /// <param name="x"></param>
         /// <param name="y"></param>
         /// <returns></returns>
-        private int CountNeighbors(int x, int y)
+        private int CountNeighbours(int x, int y)
         {
             /*
                 1 2 3
@@ -322,32 +293,27 @@ namespace SimEngine
 
     /// <summary>
     /// Engine uses a 1 Dimensional Char array
-    /// Engine is not complete
+    /// TODO Engine is not complete
     /// </summary>
     public class Engine2 : LifeEngine
     {
         #region Fields
 
+        private Char[] _cells;
         private readonly Char[] _workCells;
-
-        #endregion
-
-        #region Properties
-
-        public Char[] Cells { get; set; }
 
         #endregion
 
         #region Constructor
 
         /// <summary>
-        /// Initializes the engine
+        /// Initializes the engines Life field
         /// </summary>
         /// <param name="width"></param>
         /// <param name="height"></param>
         public Engine2(int width, int height) : base(width, height)
         {
-            Cells = new Char[Width * Height];
+            _cells = new Char[Width * Height];
             _workCells = new Char[Width * Height];
         }
 
@@ -363,7 +329,7 @@ namespace SimEngine
         /// <param name="alive"></param>
         public override void SetCell(int x, int y, bool alive)
         {
-            Cells[y * Width + x] = alive ? 'O' : ' ';
+            _cells[y * Width + x] = alive ? 'O' : ' ';
         }
 
         #endregion
@@ -378,7 +344,23 @@ namespace SimEngine
         /// <returns></returns>
         public override bool GetCell(int x, int y)
         {
-            return Cells[y*Width + x] == 1 ? true : false;
+            return _cells[y * Width + x] == 1 ? true : false;
+        }
+
+        #endregion
+
+        #region Method: Clear
+
+        /// <summary>
+        /// Set all cells to dead
+        /// </summary>
+        public override void Clear()
+        {
+            for (int idx=0; idx < _cells.Length; idx++)
+            {
+                _cells[idx] = ' ';
+                _workCells[idx] = ' ';
+            }
         }
 
         #endregion
@@ -392,7 +374,14 @@ namespace SimEngine
         /// <returns></returns>
         public override string RowToString(int row)
         {
-            throw new NotImplementedException();
+            string strRow = String.Empty;
+
+            for (int x = 0; x < Width; x++)
+            {
+                strRow += GetCell(x, row) ? 'O' : ' ';
+            }
+
+            return strRow;
         }
 
         #endregion
@@ -411,12 +400,12 @@ namespace SimEngine
         {
             Generation++;
 
-            for (int idx = 0; idx < Cells.Length; idx++)
+            for (int idx = 0; idx < _cells.Length; idx++)
             {
-                int neighbours = CountNeighbors(idx);
+                int neighbours = CountNeighbours(idx);
 
                 // Live cell
-                if (Cells[idx] == 1)
+                if (_cells[idx] == 1)
                 {
                     // Any live cell with fewer than two live neighbours dies, as if caused by underpopulation.
                     // Any live cell with more than three live neighbours dies, as if by overcrowding.
@@ -432,19 +421,19 @@ namespace SimEngine
                 }
             }
 
-            Cells = _workCells;
+            _cells = _workCells;
         }
 
         #endregion
 
-        #region Method: CountNeighbors
+        #region Method: CountNeighbours
 
         /// <summary>
         /// Return the number of neighbors around the given cell
         /// </summary>
         /// <param name="idx"></param>
         /// <returns></returns>
-        private int CountNeighbors(int idx)
+        private int CountNeighbours(int idx)
         {
             // idx = 81
             // p = ((idx / Width) - 1) + idx % Width
@@ -481,30 +470,30 @@ namespace SimEngine
             //  7 6 5
 
             int neighbors = 0;
-            int x = idx % Width;
-            int y = idx / Width;
-            int pos1, pos2, pos3, pos4, pos5, pos6, pos7, pos8;
+            //int x = idx % Width;
+            //int y = idx / Width;
 
             // No corners and sides case
+            // TODO Add corners and side cases
             if (idx > Width && idx < Width*Height-Width-1)
             {
-                pos1 = idx - Width - 1;
-                pos2 = idx - Width;
-                pos3 = idx - Width + 1;
-                pos4 = idx + 1;
-                pos5 = idx + Width + 1;
-                pos6 = idx + Width;
-                pos7 = idx + Width - 1;
-                pos8 = idx - 1;
+                int pos1 = idx - Width - 1;
+                int pos2 = idx - Width;
+                int pos3 = idx - Width + 1;
+                int pos4 = idx + 1;
+                int pos5 = idx + Width + 1;
+                int pos6 = idx + Width;
+                int pos7 = idx + Width - 1;
+                int pos8 = idx - 1;
 
-                if (Cells[pos1] == 'O') neighbors++;
-                if (Cells[pos2] == 'O') neighbors++;
-                if (Cells[pos3] == 'O') neighbors++;
-                if (Cells[pos4] == 'O') neighbors++;
-                if (Cells[pos5] == 'O') neighbors++;
-                if (Cells[pos6] == 'O') neighbors++;
-                if (Cells[pos7] == 'O') neighbors++;
-                if (Cells[pos8] == 'O') neighbors++;
+                if (_cells[pos1] == 'O') neighbors++;
+                if (_cells[pos2] == 'O') neighbors++;
+                if (_cells[pos3] == 'O') neighbors++;
+                if (_cells[pos4] == 'O') neighbors++;
+                if (_cells[pos5] == 'O') neighbors++;
+                if (_cells[pos6] == 'O') neighbors++;
+                if (_cells[pos7] == 'O') neighbors++;
+                if (_cells[pos8] == 'O') neighbors++;
             }
 
             return neighbors;
@@ -518,10 +507,43 @@ namespace SimEngine
     #region Class Engine3
 
     /// <summary>
-    /// Engine uses objects
+    /// Engine uses object refernces
+    /// TODO Engine is not complete, currently eating cells
     /// </summary>
     public class Engine3 : LifeEngine
     {
+        #region Class: Cell
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public class Cell
+        {
+            public int Alive { get; set; }
+            public Cell N  { private get; set; }
+            public Cell Ne { private get; set; }
+            public Cell E  { private get; set; }
+            public Cell Se { private get; set; }
+            public Cell S  { private get; set; }
+            public Cell Sw { private get; set; }
+            public Cell W  { private get; set; }
+            public Cell Nw { private get; set; }
+            public int Neighbors
+            {
+                get { return N.Alive + Ne.Alive + E.Alive + Se.Alive + S.Alive + Sw.Alive + W.Alive + Nw.Alive; }
+            }
+        }
+
+        #endregion
+
+        #region Fields
+
+        private List<Cell> _cells;
+        private readonly List<Cell> _workCells;
+        private readonly int _length;
+
+        #endregion
+
         #region Constructor
 
         /// <summary>
@@ -531,7 +553,56 @@ namespace SimEngine
         /// <param name="height"></param>
         public Engine3(int width, int height) : base(width, height)
         {
-            
+            // Create the cells
+            _length = Width * Height;
+
+            _cells = new List<Cell>(_length);
+            _workCells = new List<Cell>(_length);
+
+            for (int i = 0; i < _length; i++)
+            {
+                _cells.Add(new Cell {Alive = 0});
+                _workCells.Add(new Cell { Alive = 0 });
+            }
+
+            // Assign neighbors
+            for (int y = 0; y < Height; y++)
+            {
+                for (int x = 0; x < Width; x++)
+                {
+                    /*
+                        1 2 3
+                        8 c 4
+                        7 6 5
+                    * From top around clockwise
+                    * North      = Neighbour 2 x,   y-1
+                    * North East = Neighbour 3 x+1, y-1
+                    * East       = Neighbour 4 x+1, y
+                    * South East = Neighbour 5 x+1, y+1
+                    * South      = Neighbour 6 x,   y+1
+                    * South West = Neighbour 7 x-1, y+1
+                    * West       = Neighbour 8 x-1, y
+                    * NorthWest  = Neighbour 1 x-1, y-1
+                    */
+
+                    Cell c = GetCellObj(x, y);
+                    int negX = (x - 1 + Width) % (Width);
+                    int posX = (x + 1) % Width;
+                    int negY = (y - 1 + Height) % (Height);
+                    int posY = (y + 1) % Height;
+
+                    c.N = GetCellObj(x, negY);
+                    c.Ne = GetCellObj(posX, negY);
+                    c.E = GetCellObj(posX, y);
+                    c.Se = GetCellObj(posX, posY);
+                    c.S = GetCellObj(x, posY);
+                    c.Sw = GetCellObj(negX, posY);
+                    c.W = GetCellObj(negX, y);
+                    c.Nw = GetCellObj(negX, negY);
+                }
+            }
+
+            _workCells = _cells;
         }
 
         #endregion
@@ -546,7 +617,7 @@ namespace SimEngine
         /// <param name="alive"></param>
         public override void SetCell(int x, int y, bool alive)
         {
-            throw new NotImplementedException();
+            _cells[y * Width + x].Alive = alive ? 1 : 0;
         }
 
         #endregion
@@ -561,7 +632,23 @@ namespace SimEngine
         /// <returns></returns>
         public override bool GetCell(int x, int y)
         {
-            throw new NotImplementedException();
+            return _cells[y * Width + x].Alive == 1 ? true : false;
+        }
+
+        #endregion
+
+        #region Method: Clear
+
+        /// <summary>
+        /// Set all cells to dead
+        /// </summary>
+        public override void Clear()
+        {
+            for (int idx = 0; idx < _length; idx++)
+            {
+                _cells[idx].Alive = 0;
+                _workCells[idx].Alive = 0;
+            }
         }
 
         #endregion
@@ -575,7 +662,12 @@ namespace SimEngine
         /// <returns></returns>
         public override string RowToString(int row)
         {
-            throw new NotImplementedException();
+            string strRow = String.Empty;
+
+            for (int x = 0; x < Width; x++)
+                strRow += GetCell(x, row) ? 'O' : ' ';
+
+            return strRow;
         }
 
         #endregion
@@ -593,21 +685,58 @@ namespace SimEngine
         public override void NextGeneration()
         {
             Generation++;
-            int neighbors = CountNeighbors(0);
+
+            for (int idx=0; idx < _length; idx++)
+            {
+                int neighbours = CountNeighbours(idx);
+
+                // Live cell
+                if (_cells[idx].Alive == 1)
+                {
+                    // Any live cell with fewer than two live neighbours dies, as if caused by underpopulation.
+                    // Any live cell with more than three live neighbours dies, as if by overcrowding.
+                    if (neighbours < 2 || neighbours > 3) _workCells[idx].Alive = 0;
+                    // Any live cell with two or three live neighbours lives on to the next generation.
+                    else _workCells[idx].Alive = 1;
+                }
+                else
+                {
+                    // Any dead cell with exactly three live neighbours becomes a live cell.
+                    if (neighbours == 3)
+                        _workCells[idx].Alive = 1;
+                }
+            }
+
+            _cells = _workCells;
         }
 
         #endregion
 
-        #region Method: CountNeighbors
+        #region Method: CountNeighbours
 
         /// <summary>
         /// Return the number of neighbors around the given cell
         /// </summary>
         /// <param name="idx"></param>
         /// <returns></returns>
-        private int CountNeighbors(int idx)
+        private int CountNeighbours(int idx)
         {
-            return 0;
+            return _cells[idx].Neighbors;
+        }
+
+        #endregion
+
+        #region Method: GetCellObj
+
+        /// <summary>
+        /// Return a <see cref="Cell"/> at the given coordinates
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <returns></returns>
+        private Cell GetCellObj(int x, int y)
+        {
+            return _cells[y * Width + x];
         }
 
         #endregion
