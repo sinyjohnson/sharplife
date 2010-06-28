@@ -74,6 +74,22 @@ namespace SimEngine
 
         #endregion
 
+        #region Method: Clear
+
+        /// <summary>
+        /// Set all cells to dead
+        /// </summary>
+        public void Clear()
+        {
+            for (int x = 0; x < Width; x++)
+            {
+                for (int y = 0; y < Height; y++)
+                    SetCell(x, y, false);
+            }
+        }
+
+        #endregion
+
         #region Abstract Methods
 
         public abstract void SetCell(int x, int y, bool alive);
@@ -576,7 +592,8 @@ namespace SimEngine
         /// </summary>
         public override void NextGeneration()
         {
-            throw new NotImplementedException();
+            Generation++;
+            int neighbors = CountNeighbors(0);
         }
 
         #endregion
@@ -590,7 +607,7 @@ namespace SimEngine
         /// <returns></returns>
         private int CountNeighbors(int idx)
         {
-            throw new NotImplementedException();
+            return 0;
         }
 
         #endregion

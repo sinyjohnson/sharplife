@@ -369,23 +369,37 @@ namespace SimEngine
                         return;
                     default:
                         // Convert number, do run of next character
-                        int n = Utility.StringMethods.StringToInteger(line.Substring(idx));
+                        int numberOfDigits;
+                        int n = Utility.StringMethods.StringToInteger(line.Substring(idx), out numberOfDigits);
 
                         if (n < 1)
-                        {
                             throw new Exception(Properties.Settings.Default.INVALID_ROW);
-                        }
 
-                        char type = line[idx + 1];
-                        for (int i=0; i < n; i++)
+                        char type = line[idx + numberOfDigits];
+                        switch (type)
                         {
-                            if (type == 'o')
-                                engine.SetCell(x, y, true);
+                            case 'b':
+                                x += n;
+                                break;
 
-                            x++;
+                            case 'o':
+                                for (int i = 0; i < n; i++)
+                                {
+                                    if (type == 'o')
+                                        engine.SetCell(x, y, true);
+
+                                    x++;
+                                }
+                                break;
+
+                            case '$':
+                                x = _startX;
+                                y += n;
+                                break;
                         }
-                        // Skip the RLE b/o we just processed
-                        idx++;
+
+                        // Skip the RLE b/o/$ run we just processed
+                        idx += numberOfDigits;
                         break;
                 }
             }

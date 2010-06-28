@@ -47,7 +47,7 @@ namespace SharpLife
             _lifeWindow = lifeWindow;
             _engine = CreateEngine(EngineType.Engine1, lifeWindow.Width, lifeWindow.Height);
             _timer.Tick += TimerEventProcessor;
-            _timer.Interval = 60;
+            _timer.Interval = 10;
         }
 
         #endregion
@@ -81,7 +81,7 @@ namespace SharpLife
 
         private void OpenToolStripMenuItemClick(object sender, EventArgs e)
         {
-            OpenFile();
+            LoadFile();
         }
 
         private void SaveToolStripMenuItemClick(object sender, EventArgs e)
@@ -125,7 +125,7 @@ namespace SharpLife
 
         private void OpenToolStripButtonClick(object sender, EventArgs e)
         {
-            OpenFile();
+            LoadFile();
         }
 
         private void SaveToolStripButtonClick(object sender, EventArgs e)
@@ -200,19 +200,39 @@ namespace SharpLife
 
         #region Private Methods
 
-        private static void NewLife()
+        #region Method: NewLife
+
+        /// <summary>
+        /// Stop any processing, and clear out the pattern and screen
+        /// </summary>
+        private void NewLife()
         {
-            throw new NotImplementedException();
+            Pause();
+            _engine.Clear();
+            lifeWindow.Invalidate();
         }
 
-        private static void OpenFile()
+        #endregion
+
+        #region Method: LoadFile
+
+        /// <summary>
+        /// Load a supported file type
+        /// </summary>
+        private void LoadFile()
         {
             OpenFileDialog openFileDialog = new OpenFileDialog {Filter = @"RLE Files|*.rle"};
+
+            Pause();
 
             try
             {
                 if (openFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    _engine.Clear();
                     FileObject.Load(openFileDialog.FileName, _engine);
+                    lifeWindow.Invalidate();
+                }
             }
             catch (Exception ex)
             {
@@ -220,31 +240,68 @@ namespace SharpLife
             }
         }
 
+        #endregion
+
+        #region Method: SaveFile
+
+        /// <summary>
+        /// 
+        /// </summary>
         private static void SaveFile()
         {
             throw new NotImplementedException();
         }
 
+        #endregion
+
+        #region Method: Exit
+
+        /// <summary>
+        /// Exit the application
+        /// </summary>
         private void Exit()
         {
             Close();
         }
 
+        #endregion
+
+        #region Method: Run
+
+        /// <summary>
+        /// Run the current pattern
+        /// </summary>
         private void Run()
         {
             lifeWindow.Invalidate();
             _timer.Start();
         }
 
+        #endregion
+
+        #region Method: Pause
+
+        /// <summary>
+        /// Pause the running of a pattern
+        /// </summary>
         private static void Pause()
         {
             _timer.Stop();
         }
 
+        #endregion
+
+        #region Method: Step
+
+        /// <summary>
+        /// 
+        /// </summary>
         private static void Step()
         {
             throw new NotImplementedException();
         }
+
+        #endregion
 
         #endregion
     }

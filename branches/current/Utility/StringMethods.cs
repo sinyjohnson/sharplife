@@ -27,6 +27,7 @@ namespace Utility
     {
         /// <summary>
         /// Returns an integer from the given string or -1 if no numbers exist
+        /// and the number of digits in the found integer
         /// 
         /// string may contain numbers and letters and the method will return
         /// an integer from the first run of integers found in the string
@@ -35,16 +36,19 @@ namespace Utility
         /// "67abc88" will return 67
         /// </summary>
         /// <param name="str"></param>
+        /// <param name="numberOfDigits"></param>
         /// <returns></returns>
-        public static int StringToInteger(string str)
+        public static int StringToInteger(string str, out int numberOfDigits)
         {
             string numbers = string.Empty;
+            numberOfDigits = 0;
 
             foreach (char c in str)
             {
                 if (char.IsDigit(c))
                 {
                     numbers += c;
+                    numberOfDigits++;
                 }
                 else
                 {
