@@ -1,11 +1,31 @@
-
 This simulator implements what has been defined as Rule B3/S23, which is the classic life algorithm rules
 
+====================================================================================================================
 http://en.wikipedia.org/wiki/Conway's_Game_of_Life
 http://dotat.at/prog/life/life.html
 http://developer.download.nvidia.com/SDK/9.5/Samples/samples.html#GL_GameOfLife ( NVidia GeForce2 Ultra 72 million cells per second)
 http://members.tip.net.au/~dbell/ hashlife implementation
 
+
+====================================================================================================================
+Use .NET Reflector to see code as is and with inlining of CountNeighbours
+
+====================================================================================================================
+SkipTable or SkipCache
+Try an engine with skipping large areas of dead space.
+
+Track the x,y of areas to start iterating. An area to start/end would be a collection of x,y coordinates
+such that in NextGeneration the first area would define the beginning and ending x,y coordinates to iterate
+Also in NextGeneration this table would be re-built for the next generation.
+
+A start coordinate would need to be determined by the first live cells x,y -2 to allow for checking a dead
+cell for its chance to become alive.
+
+The very first coordinate and last coordinate could be set when a pattern is loaded as the information
+to build the table would be available at that time, else, the table would need to start with 0,0 and Width-1,
+Height-1, and then be updated in the first generation.
+
+====================================================================================================================
 Thoughts on a bit array based engine
 80*25 = 2000
 BitArray bits = new BitArray(Width*Height, false);
@@ -30,7 +50,7 @@ xxx
 01000000
 00100000
 
-
+====================================================================================================================
 Implement a common Life file format reader/writer
 Format details: http://psoup.math.wisc.edu/mcell/ca_files_formats.html
 
@@ -89,6 +109,7 @@ Format details: http://psoup.math.wisc.edu/mcell/ca_files_formats.html
 	information lines and are displayed when the user clicks the "information" button in Golly's tool bar. 
 	Any comment lines interspersed with the pattern data will not be displayed. 
 
+====================================================================================================================
 Faster implementations
 unbounded universe using quadtrees
 http://www.drdobbs.com/high-performance-computing/184406478;jsessionid=XM4DQWAW2JH35QE1GHRSKH4ATMY32JVN

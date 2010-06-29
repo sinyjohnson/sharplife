@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.30729</ProductVersion>
+    <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{FA7A38D4-48C3-4FBE-AB9B-B5C310B99141}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -41,9 +41,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Engines\Engine1.cs" />
+    <Compile Include="Engines\Engine2.cs" />
+    <Compile Include="Engines\Engine3.cs" />
+    <Compile Include="Engines\Engine4.cs" />
     <Compile Include="FileObject.cs" />
     <Compile Include="HiPerformanceTimer.cs" />
     <Compile Include="LifeEngine.cs" />
+    <Compile Include="Point2d.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
