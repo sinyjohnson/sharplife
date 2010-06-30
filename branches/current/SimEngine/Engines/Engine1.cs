@@ -16,8 +16,6 @@
 */
 #endregion
 
-using System;
-
 namespace SimEngine.Engines
 {
     #region Class: Engine1
@@ -59,7 +57,7 @@ namespace SimEngine.Engines
         /// <returns></returns>
         public override string Title()
         {
-            throw new NotImplementedException();
+            return @"2D integer array engine";
         }
 
         #endregion
@@ -72,7 +70,7 @@ namespace SimEngine.Engines
         /// <returns></returns>
         public override string Summary()
         {
-            throw new NotImplementedException();
+            return @"Uses a 2D integer array and scans the entire array each generation. Life field wraps around at the sides, tops and corners, i.e a toroidal array";
         }
 
         #endregion

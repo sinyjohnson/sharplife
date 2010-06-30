@@ -59,7 +59,7 @@ namespace SimEngine.Engines
         /// <returns></returns>
         public override string Title()
         {
-            throw new NotImplementedException();
+            return @"1D character array engine";
         }
 
         #endregion
@@ -72,7 +72,7 @@ namespace SimEngine.Engines
         /// <returns></returns>
         public override string Summary()
         {
-            throw new NotImplementedException();
+            return @"Uses a 1D character array and scans the entire array each generation. Life field wraps around at the sides, tops and corners, i.e a toroidal array";
         }
 
         #endregion

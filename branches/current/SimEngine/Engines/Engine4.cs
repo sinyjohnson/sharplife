@@ -16,15 +16,19 @@
 */
 #endregion
 
-using System;
+using System.Collections.Generic;
 
 namespace SimEngine.Engines
 {
     #region Class: Engine4
 
     /// <summary>
-    /// Engine uses a 2 Dimensional int array and Skip List
+    /// Engine uses a 2 Dimensional int array and Scan List
     /// The Life field wraps around at the sides, tops and corners, i.e a toroidal array
+    /// 
+    /// The scan list is a List of start and end x,y coordinates indicating what areas of the
+    /// Life field have activity to scan, effectively skipping areas that have no possibility of
+    /// life/death
     /// </summary>
     public class Engine4 : LifeEngine
     {
@@ -32,6 +36,7 @@ namespace SimEngine.Engines
 
         private readonly int[,] _cells;
         private readonly int[,] _workCells;
+        private List<CoordinatePair> _scanList = new List<CoordinatePair>();
 
         #endregion
 
@@ -47,6 +52,9 @@ namespace SimEngine.Engines
         {
             _cells = new int[Width, Height];
             _workCells = new int[Width, Height];
+            
+            // Initialize the scan list to check the entire field
+            _scanList.Add(new CoordinatePair(new Point2D(0, 0), new Point2D(Width-1, Height-1)));
         }
 
         #endregion
@@ -59,7 +67,7 @@ namespace SimEngine.Engines
         /// <returns></returns>
         public override string Title()
         {
-            throw new NotImplementedException();
+            return @"2D integer array engine with scan list";
         }
 
         #endregion
@@ -72,7 +80,7 @@ namespace SimEngine.Engines
         /// <returns></returns>
         public override string Summary()
         {
-            throw new NotImplementedException();
+            return @"Uses a 2D integer array. A list of cells to scan is used to skip over dead space. Life field wraps around at the sides, tops and corners, i.e a toroidal array";
         }
 
         #endregion
@@ -158,35 +166,63 @@ namespace SimEngine.Engines
         public override void NextGeneration()
         {
             _timer.Start();
-
             Generation++;
 
-            for (int y = 0; y < Height; y++)
-            {
-                for (int x = 0; x < Width; x++)
-                {
-                    int neighbours = CountNeighbours(x, y);
+            // TODO Use scan list
+            // Prepare to rebuild the scan list as we process the main scan list
+            // Start by assuming we will need to scan the entire field next generation
+            List<CoordinatePair> newScanList = new List<CoordinatePair>();
+            CoordinatePair coordinate = new CoordinatePair(0, 0, Width - 1, Height - 1);
+            bool findingStartCoordinate = true;
 
-                    // Live cell
-                    if (_cells[x, y] == 1)
+            // While having CoordinatePairs
+            foreach (CoordinatePair coordinatePair in _scanList)
+            {
+                // Loop over start y, and x until the end y and x
+                for (int y = coordinatePair._start._y; y <= coordinatePair._stop._y; y++)
+                {
+                    for (int x = coordinatePair._start._x; x <= coordinatePair._stop._x; x++)
                     {
-                        // Any live cell with fewer than two live neighbours dies, as if caused by underpopulation.
-                        // Any live cell with more than three live neighbours dies, as if by overcrowding.
-                        if (neighbours < 2 || neighbours > 3) _workCells[x, y] = 0;
-                        // Any live cell with two or three live neighbours lives on to the next generation.
-                        else _workCells[x, y] = 1;
-                    }
-                    else
-                    {
-                        // Any dead cell with exactly three live neighbours becomes a live cell.
-                        if (neighbours == 3)
-                            _workCells[x, y] = 1;
+                        // Determine life
+                        // Build new scan list entries
+                        int neighbours = CountNeighbours(x, y);
+                        findingStartCoordinate = neighbours == 0;
+
+                        if (findingStartCoordinate)
+                        {
+                            coordinate._start._x = x;
+                            coordinate._start._y = y;
+                        }
+                        else
+                        {
+                            coordinate._stop._x = x;
+                            coordinate._stop._y = y;
+                        }
+
+                        // Live cell
+                        if (_cells[x, y] == 1)
+                        {
+                            // Any live cell with fewer than two live neighbours dies, as if caused by underpopulation.
+                            // Any live cell with more than three live neighbours dies, as if by overcrowding.
+                            if (neighbours < 2 || neighbours > 3) _workCells[x, y] = 0;
+                            // Any live cell with two or three live neighbours lives on to the next generation.
+                            else _workCells[x, y] = 1;
+                        }
+                        else
+                        {
+                            // Any dead cell with exactly three live neighbours becomes a live cell.
+                            if (neighbours == 3)
+                                _workCells[x, y] = 1;
+                        }
                     }
                 }
             }
 
             // C# is week with multi-dimensional arrays, copy the hard way
             CopyCells(_workCells, _cells, Width, Height);
+
+            // Set the scan list to our new rebuilt scan list
+            _scanList = newScanList;
 
             _timer.Stop();
             TotalTime += _timer.Duration;

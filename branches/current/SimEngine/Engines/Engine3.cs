@@ -24,7 +24,7 @@ namespace SimEngine.Engines
     #region Class: Engine3
 
     /// <summary>
-    /// Engine uses object refernces
+    /// Engine uses object references
     /// TODO Engine is not complete, currently eating cells
     /// </summary>
     public class Engine3 : LifeEngine
@@ -133,7 +133,7 @@ namespace SimEngine.Engines
         /// <returns></returns>
         public override string Title()
         {
-            throw new NotImplementedException();
+            return @"Object reference engine";
         }
 
         #endregion
@@ -146,7 +146,7 @@ namespace SimEngine.Engines
         /// <returns></returns>
         public override string Summary()
         {
-            throw new NotImplementedException();
+            return @"Uses a List of cells with each cell containing references to its 8 neighbours. Scans the entire List each generation. Life field wraps around at the sides, tops and corners, i.e a toroidal array";
         }
 
         #endregion

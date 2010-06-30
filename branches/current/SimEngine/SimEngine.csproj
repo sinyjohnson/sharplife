@@ -41,6 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CoordinatePair.cs" />
     <Compile Include="Engines\Engine1.cs" />
     <Compile Include="Engines\Engine2.cs" />
     <Compile Include="Engines\Engine3.cs" />
