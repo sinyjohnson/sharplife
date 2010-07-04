@@ -20,7 +20,7 @@ using System.ComponentModel;
 using System.Runtime.InteropServices;
 using System.Threading;
 
-namespace SimEngine
+namespace Utility
 {
     #region Class: HiPerformanceTimer
 
@@ -42,23 +42,24 @@ namespace SimEngine
         {
             _startTime = 0;
             _stopTime = 0;
-
+#if (WINDOWS)
             if (QueryPerformanceFrequency(out _freq) == false)
             {
                 // high-performance counter not supported
 
                 throw new Win32Exception();
             }
+#endif
         }
 
         // Start the timer
         public void Start()
         {
-            // lets do the waiting threads there work
-
+            // Let the waiting threads work
             Thread.Sleep(0);
-
+#if (WINDOWS)
             QueryPerformanceCounter(out _startTime);
+#endif
         }
 
         // Stop the timer
@@ -72,7 +73,11 @@ namespace SimEngine
         {
             get
             {
+#if (WINDOWS)
                 return (double)(_stopTime - _startTime) / _freq;
+#else
+                return 1;
+#endif
             }
         }
     }

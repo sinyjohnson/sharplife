@@ -16,6 +16,8 @@
 */
 #endregion
 
+using Utility;
+
 namespace SimEngine
 {
     #region Enum: EngineType

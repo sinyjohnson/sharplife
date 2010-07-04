@@ -123,8 +123,10 @@ namespace SharpLifeConsole
 
             #endregion
 
+#if (WINDOWS)
             Console.WindowWidth = _screenWidth;
             Console.WindowHeight = _screenHeight;
+#endif
             Console.CursorVisible = false;
 
             RenderBoard();
@@ -304,7 +306,13 @@ namespace SharpLifeConsole
         /// </summary>
         private static void Usage()
         {
-            
+            Console.WriteLine("Usage:");
+            Console.WriteLine("     SharpLifeConsole [-engine engine name] [-width n] [-height n] [-mode p|r] [-file file name] [-help/?]");
+            Console.WriteLine("         -engine EngineType, Engine1 ...");
+            Console.WriteLine("         -width  number, if number is greater than the maximum console size, then maximum console size is used");
+            Console.WriteLine("         -height number, if number is greater than the maximum console size, then maximum console size is used");
+            Console.WriteLine("         -mode   p=paused r=running");
+            Console.WriteLine("         -file   file name of a supported life file pattern");
         }
 
         #endregion:
