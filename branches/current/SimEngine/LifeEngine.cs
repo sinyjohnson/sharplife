@@ -16,7 +16,7 @@
 */
 #endregion
 
-using Utility;
+using System.Diagnostics;
 
 namespace SimEngine
 {
@@ -33,7 +33,7 @@ namespace SimEngine
     /// </summary>
     public abstract class LifeEngine
     {
-        protected HiPerformanceTimer _timer = new HiPerformanceTimer();
+        protected Stopwatch _stopWatch = new Stopwatch();
 
         #region Properties
 
@@ -41,8 +41,8 @@ namespace SimEngine
         public int Height { get; set; }
         public int Generation { get; set; }
 
-        public double TotalTime { get; set; }
-        public double AvgTimePerGeneration
+        public long TotalTime { get; set; }
+        public long AvgTimePerGeneration
         {
             get
             {

@@ -19,6 +19,7 @@
 using System;
 using System.Threading;
 using System.Timers;
+using System.Diagnostics;
 using SimEngine;
 using SimEngine.Engines;
 using Utility;
@@ -216,11 +217,11 @@ namespace SharpLifeConsole
         /// </summary>
         private static void RenderBoard()
         {
-            HiPerformanceTimer timer = new HiPerformanceTimer();
+            Stopwatch stopwatch = new Stopwatch(); 
 
             Console.Clear();
 
-            timer.Start();
+            stopwatch.Start();
             {
                 // Write a row of cells
                 for (int y = 0; y < _engine.Height; y++)
@@ -229,10 +230,10 @@ namespace SharpLifeConsole
                     Console.Write(_engine.RowToString(y));
                 }
             }
-            timer.Stop();
+            stopwatch.Stop();
 
             Console.SetCursorPosition(0, _screenHeight - 1);
-            Console.Write("Generation: " + _engine.Generation + " Time: " + timer.Duration);
+            Console.Write("Generation: " + _engine.Generation + " Time: " + stopwatch.ElapsedMilliseconds);
         }
 
         #endregion

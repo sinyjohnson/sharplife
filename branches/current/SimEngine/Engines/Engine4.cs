@@ -165,7 +165,7 @@ namespace SimEngine.Engines
         /// </summary>
         public override void NextGeneration()
         {
-            _timer.Start();
+            _stopWatch.Start();
             Generation++;
 
             // TODO Use scan list
@@ -224,8 +224,9 @@ namespace SimEngine.Engines
             // Set the scan list to our new rebuilt scan list
             _scanList = newScanList;
 
-            _timer.Stop();
-            TotalTime += _timer.Duration;
+            _stopWatch.Stop();
+            TotalTime += _stopWatch.ElapsedMilliseconds;
+            _stopWatch.Reset();
         }
 
         #endregion

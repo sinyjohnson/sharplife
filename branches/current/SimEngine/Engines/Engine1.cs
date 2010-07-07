@@ -155,8 +155,7 @@ namespace SimEngine.Engines
         /// </summary>
         public override void NextGeneration()
         {
-            _timer.Start();
-
+            _stopWatch.Start();
             Generation++;
 
             for (int y = 0; y < Height; y++)
@@ -186,8 +185,9 @@ namespace SimEngine.Engines
             // C# is week with multi-dimensional arrays, copy the hard way
             CopyCells(_workCells, _cells, Width, Height);
 
-            _timer.Stop();
-            TotalTime += _timer.Duration;
+            _stopWatch.Stop();
+            TotalTime += _stopWatch.ElapsedMilliseconds;
+            _stopWatch.Reset();
         }
 
         #endregion
