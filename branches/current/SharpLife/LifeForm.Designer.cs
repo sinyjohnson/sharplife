@@ -1,6 +1,6 @@
 ﻿namespace SharpLife
 {
-    partial class LifeForm
+    sealed partial class LifeForm
     {
         /// <summary>
         /// Required designer variable.
@@ -75,9 +75,11 @@
             this.toolStripSeparator7 = new System.Windows.Forms.ToolStripSeparator();
             this.helpToolStripButton = new System.Windows.Forms.ToolStripButton();
             this.statusStrip = new System.Windows.Forms.StatusStrip();
-            this.lifeWindow = new System.Windows.Forms.Panel();
+            this.toolStripStatusLabelLifePattern = new System.Windows.Forms.ToolStripStatusLabel();
+            this.toolStripStatusLabelGeneration = new System.Windows.Forms.ToolStripStatusLabel();
             this.menuStrip.SuspendLayout();
             this.toolStrip.SuspendLayout();
+            this.statusStrip.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip
@@ -471,31 +473,32 @@
             // 
             // statusStrip
             // 
+            this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripStatusLabelLifePattern,
+            this.toolStripStatusLabelGeneration});
             this.statusStrip.Location = new System.Drawing.Point(0, 720);
             this.statusStrip.Name = "statusStrip";
             this.statusStrip.Size = new System.Drawing.Size(1018, 22);
             this.statusStrip.TabIndex = 2;
             this.statusStrip.Text = "statusStrip1";
             // 
-            // lifeWindow
+            // toolStripStatusLabelLifePattern
             // 
-            this.lifeWindow.BackColor = System.Drawing.Color.Black;
-            this.lifeWindow.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lifeWindow.Location = new System.Drawing.Point(0, 49);
-            this.lifeWindow.Name = "lifeWindow";
-            this.lifeWindow.Size = new System.Drawing.Size(1018, 671);
-            this.lifeWindow.TabIndex = 3;
-            this.lifeWindow.Paint += new System.Windows.Forms.PaintEventHandler(this.LifeWindowPaint);
-            this.lifeWindow.MouseMove += new System.Windows.Forms.MouseEventHandler(this.LifeWindowMouseMove);
-            this.lifeWindow.MouseDown += new System.Windows.Forms.MouseEventHandler(this.LifeWindowMouseDown);
-            this.lifeWindow.MouseUp += new System.Windows.Forms.MouseEventHandler(this.LifeWindowMouseUp);
+            this.toolStripStatusLabelLifePattern.Name = "toolStripStatusLabelLifePattern";
+            this.toolStripStatusLabelLifePattern.Size = new System.Drawing.Size(106, 17);
+            this.toolStripStatusLabelLifePattern.Text = "No pattern loaded.";
+            // 
+            // toolStripStatusLabelGeneration
+            // 
+            this.toolStripStatusLabelGeneration.Name = "toolStripStatusLabelGeneration";
+            this.toolStripStatusLabelGeneration.Size = new System.Drawing.Size(68, 17);
+            this.toolStripStatusLabelGeneration.Text = "Generation:";
             // 
             // LifeForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1018, 742);
-            this.Controls.Add(this.lifeWindow);
             this.Controls.Add(this.statusStrip);
             this.Controls.Add(this.toolStrip);
             this.Controls.Add(this.menuStrip);
@@ -507,10 +510,13 @@
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Life";
+            this.Paint += new System.Windows.Forms.PaintEventHandler(this.LifeFormPaint);
             this.menuStrip.ResumeLayout(false);
             this.menuStrip.PerformLayout();
             this.toolStrip.ResumeLayout(false);
             this.toolStrip.PerformLayout();
+            this.statusStrip.ResumeLayout(false);
+            this.statusStrip.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -556,7 +562,6 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator7;
         private System.Windows.Forms.ToolStripButton helpToolStripButton;
         private System.Windows.Forms.StatusStrip statusStrip;
-        private System.Windows.Forms.Panel lifeWindow;
         private System.Windows.Forms.ToolStripMenuItem lifeToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem runToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem stepToolStripMenuItem;
@@ -565,6 +570,8 @@
         private System.Windows.Forms.ToolStripButton toolStripButtonStep;
         private System.Windows.Forms.ToolStripButton toolStripButtonPause;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator8;
+        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabelLifePattern;
+        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabelGeneration;
     }
 }
 

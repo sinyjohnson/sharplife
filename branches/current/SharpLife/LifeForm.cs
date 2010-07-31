@@ -18,21 +18,22 @@
 
 using System;
 using System.Drawing;
+using System.IO;
 using System.Windows.Forms;
 using SimEngine;
 using SimEngine.Engines;
 
 namespace SharpLife
 {
-    public partial class LifeForm : Form
+    public sealed partial class LifeForm : Form
     {
         #region Fields
 
         private static LifeEngine _engine;
-        private static Panel _lifeWindow;
+        private static Form _thisForm;
+        private static ToolStripStatusLabel _thisToolStripStatusLabelGeneration;
         private static readonly Timer _timer = new Timer();
-        readonly Pen _pen = new Pen(Color.Red);
-        private bool _mouseDown = false;
+        private readonly Pen _pen;
 
         #endregion
 
@@ -45,8 +46,16 @@ namespace SharpLife
         {
             InitializeComponent();
 
-            _lifeWindow = lifeWindow;
-            _engine = CreateEngine(EngineType.Engine1, lifeWindow.Width, lifeWindow.Height);
+            // Our background and foreground colors
+            BackColor = Color.White;
+             _pen = new Pen(Color.Green);
+
+            // We need a static reference to our form, as our timer event handler for drawing is a static method
+            _thisForm = this;
+            _thisToolStripStatusLabelGeneration = toolStripStatusLabelGeneration;
+
+            // TODO Add a drop down control to allow user to select the Life Engine to use
+            _engine = CreateEngine(EngineType.Engine1, Width, Height);
             _timer.Tick += TimerEventProcessor;
             _timer.Interval = 10;
         }
@@ -56,7 +65,7 @@ namespace SharpLife
         #region Method: CreateEngine
 
         /// <summary>
-        /// Create the given Life Engine Type
+        /// Create the given Life Engine Type at the given width and height
         /// </summary>
         /// <param name="engine"></param>
         /// <param name="width"></param>
@@ -73,129 +82,72 @@ namespace SharpLife
 
         #endregion
 
-        #region Menu Item Events
+        #region Menu Events
 
-        private void NewToolStripMenuItemClick(object sender, EventArgs e)
-        {
-            NewLife();
-        }
-
-        private void OpenToolStripMenuItemClick(object sender, EventArgs e)
-        {
-            LoadFile();
-        }
-
-        private void SaveToolStripMenuItemClick(object sender, EventArgs e)
-        {
-            SaveFile();
-        }
-
-        private void SaveAsToolStripMenuItemClick(object sender, EventArgs e)
-        {
-            SaveFile();
-        }
-
-        private void ExitToolStripMenuItemClick(object sender, EventArgs e)
-        {
-            Exit();
-        }
-
-        private void RunToolStripMenuItemClick(object sender, EventArgs e)
-        {
-            Run();
-        }
-
-        private void PauseToolStripMenuItemClick(object sender, EventArgs e)
-        {
-            Pause();
-        }
-
-        private void StepToolStripMenuItemClick(object sender, EventArgs e)
-        {
-            Step();
-        }
+        private void NewToolStripMenuItemClick(object sender, EventArgs e)    { NewLife();  }
+        private void OpenToolStripMenuItemClick(object sender, EventArgs e)   { LoadFile(); }
+        private void SaveToolStripMenuItemClick(object sender, EventArgs e)   { SaveFile(); }
+        private void SaveAsToolStripMenuItemClick(object sender, EventArgs e) { SaveFile(); }
+        private void ExitToolStripMenuItemClick(object sender, EventArgs e)   { Exit();     }
+        private void RunToolStripMenuItemClick(object sender, EventArgs e)    { Run();      }
+        private void PauseToolStripMenuItemClick(object sender, EventArgs e)  { Pause();    }
+        private void StepToolStripMenuItemClick(object sender, EventArgs e)   { Step();     }
 
         #endregion
 
         #region Toolbar Events
 
-        private void NewToolStripButtonClick(object sender, EventArgs e)
-        {
-            NewLife();
-        }
-
-        private void OpenToolStripButtonClick(object sender, EventArgs e)
-        {
-            LoadFile();
-        }
-
-        private void SaveToolStripButtonClick(object sender, EventArgs e)
-        {
-            SaveFile();
-        }
-
-        private void ToolStripButtonRunClick(object sender, EventArgs e)
-        {
-            Run();
-        }
-
-        private void ToolStripButtonPauseClick(object sender, EventArgs e)
-        {
-            Pause();
-        }
-
-        private void ToolStripButtonStepClick(object sender, EventArgs e)
-        {
-            Step();
-        }
+        private void NewToolStripButtonClick(object sender, EventArgs e)   { NewLife();  }
+        private void OpenToolStripButtonClick(object sender, EventArgs e)  { LoadFile(); }
+        private void SaveToolStripButtonClick(object sender, EventArgs e)  { SaveFile(); }
+        private void ToolStripButtonRunClick(object sender, EventArgs e)   { Run();      }
+        private void ToolStripButtonPauseClick(object sender, EventArgs e) { Pause();    }
+        private void ToolStripButtonStepClick(object sender, EventArgs e)  { Step();     }
 
         #endregion
 
         #region Other Events
 
+        #region Event: TimerEventProcessor
+
+        /// <summary>
+        /// Timer timeout method to generate next life generation and render it to our window
+        /// </summary>
+        /// <param name="myObject"></param>
+        /// <param name="myEventArgs"></param>
         private static void TimerEventProcessor(Object myObject, EventArgs myEventArgs)
         {
             _timer.Stop();
             {
                 _engine.NextGeneration();
-                _lifeWindow.Invalidate();
+                _thisForm.Invalidate();
+                _thisToolStripStatusLabelGeneration.Text = @"Generation: " + _engine.Generation;
             }
             _timer.Start();
         }
 
-        private void LifeWindowPaint(object sender, PaintEventArgs e)
-        {
-            Bitmap offScreenBmp = new Bitmap(Width, Height);
-            Graphics offScreenDc = Graphics.FromImage(offScreenBmp);
+        #endregion
 
+        #region Event: LifeFormPaint
+
+        /// <summary>
+        /// Render the current Life generation to our window
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void LifeFormPaint(object sender, PaintEventArgs e)
+        {
             for (int x = 0; x < _engine.Width; x++)
             {
                 for (int y = 0; y < _engine.Height; y++)
                 {
                     if (_engine.GetCell(x, y))
-                        offScreenDc.DrawRectangle(_pen, x, y, 1, 1);
+                        e.Graphics.DrawRectangle(_pen, x, y, 1, 1);
                 }
             }
-
-            // TODO Test with hi performance timer
-            //e.Graphics.DrawImage(offScreenBmp, 0, 0);
-            e.Graphics.DrawImageUnscaled(offScreenBmp, 0, 0);
         }
 
-        private void LifeWindowMouseDown(object sender, MouseEventArgs e)
-        {
-            _mouseDown = true;
-        }
-
-        private void LifeWindowMouseUp(object sender, MouseEventArgs e)
-        {
-            _mouseDown = false;
-        }
-
-        private void LifeWindowMouseMove(object sender, MouseEventArgs e)
-        {
-
-        }
+        #endregion
 
         #endregion
 
@@ -204,13 +156,15 @@ namespace SharpLife
         #region Method: NewLife
 
         /// <summary>
-        /// Stop any processing, and clear out the pattern and screen
+        /// Stop any current life rendering, and clear out the pattern and window
         /// </summary>
         private void NewLife()
         {
             Pause();
             _engine.Clear();
-            lifeWindow.Invalidate();
+            Invalidate();
+            toolStripStatusLabelLifePattern.Text = @"No pattern loaded.";
+            toolStripStatusLabelGeneration.Text = @"Generation:";
         }
 
         #endregion
@@ -218,7 +172,7 @@ namespace SharpLife
         #region Method: LoadFile
 
         /// <summary>
-        /// Load a supported file type
+        /// Load a Life file from a supported file type into the engine
         /// </summary>
         private void LoadFile()
         {
@@ -232,7 +186,9 @@ namespace SharpLife
                 {
                     _engine.Clear();
                     FileObject.Load(openFileDialog.FileName, _engine);
-                    lifeWindow.Invalidate();
+                    Invalidate();
+                    toolStripStatusLabelLifePattern.Text = @"Pattern: " + Path.GetFileName(openFileDialog.FileName);
+                    toolStripStatusLabelGeneration.Text = @"Generation: " + _engine.Generation;
                 }
             }
             catch (Exception ex)
@@ -246,10 +202,11 @@ namespace SharpLife
         #region Method: SaveFile
 
         /// <summary>
-        /// 
+        /// Save the current Life state to a supported file type
         /// </summary>
         private static void SaveFile()
         {
+            // TODO Implement the SaveFile method
             throw new NotImplementedException();
         }
 
@@ -270,11 +227,11 @@ namespace SharpLife
         #region Method: Run
 
         /// <summary>
-        /// Run the current pattern
+        /// Run the current Life pattern
         /// </summary>
         private void Run()
         {
-            lifeWindow.Invalidate();
+            Invalidate();
             _timer.Start();
         }
 
@@ -283,7 +240,7 @@ namespace SharpLife
         #region Method: Pause
 
         /// <summary>
-        /// Pause the running of a pattern
+        /// Pause running of the current Life pattern
         /// </summary>
         private static void Pause()
         {
@@ -295,11 +252,14 @@ namespace SharpLife
         #region Method: Step
 
         /// <summary>
-        /// 
+        /// Step one generation of the current Life pattern, pausing after the step
         /// </summary>
-        private static void Step()
+        private void Step()
         {
-            throw new NotImplementedException();
+            Pause();
+            _engine.NextGeneration();
+            Invalidate();
+            toolStripStatusLabelGeneration.Text = @"Generation: " + _engine.Generation;
         }
 
         #endregion
