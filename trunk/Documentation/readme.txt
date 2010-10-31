@@ -17,15 +17,17 @@ Defined at: http://en.wikipedia.org/wiki/Conway's_Game_of_Life#Variations_on_Lif
  are stitched together, and the top and bottom edges are also, yielding a toroidal http://en.wikipedia.org/wiki/Torus
  array. The result is that active areas that move across a field edge reappear at the opposite edge.
 
-This Microsoft Visual Studio 2008 solution consists of 3 projects.
+This Microsoft Visual Studio 2008 solution consists of the following projects.
 
 	Life
+	
 		The Life project is a C# Windows Forms Application.
 		This application has not had much done to it in the way of features
 		or optimization, and simply uses a randomly generated start pattern
 		to run the simulation.
 
 	LifeConsole
+	
 		The LifeConsole project is a C# Windows Console Application.
 		This project has had the most work done with regard to features
 		and optimizations and has been used exclusively to develop and 
@@ -44,6 +46,15 @@ This Microsoft Visual Studio 2008 solution consists of 3 projects.
         H Help
         X Exit
 
+	SpeedTestConsole
+	
+		This console application is used to test the speed of the various engines.
+	
+		Usage: SpeedTestConsole -engine [engine name]
+			-engine  Optional engine name. If none given, then Engine1 is used.
+				Engine names are in the format EngineN where N is an integer.
+				If a given engine number does not esist, the application exists.
+
 	SimEngine
 
 		The SimEngine is a C# Assembly Library / DLL that contains the Life
@@ -61,6 +72,7 @@ This Microsoft Visual Studio 2008 solution consists of 3 projects.
 		Some information on the engines
 		
 			Engine1
+			
 				This engine uses two 2 dimensional (2D) integer arrays to represent
 				the life game board. This allows for the Life generation algorithm
 				to determine life, death and birth around a cell by simply looking
@@ -70,6 +82,7 @@ This Microsoft Visual Studio 2008 solution consists of 3 projects.
 				cells look back or forward across the game board.
 			
 			Engine2
+			
 				This Engine uses a 1 dimensional character array. Using this the engine
 				must find neighbors of a cell by a different method than in a 2 dimensional
 				array. Details of this are in the code method CountNeighbors.
@@ -80,9 +93,22 @@ This Microsoft Visual Studio 2008 solution consists of 3 projects.
 				into a character and added to a string.
 			
 			Engine3
+			
 				This engine uses class objects representing each cell. This engine is
 				the furthest from being complete. The idea is to have each cell able to
 				access its neighbor easily by having a reference to each neighbor available
 				in the cell, and simply asking the neighbor if it is alive, counting each
 				one that is alive and based on the total, becoming alive or dead.
 		
+			Engine4
+			
+				Engine uses a 2 Dimensional int array and Scan List
+				The Life field wraps around at the sides, tops and corners, i.e a toroidal array
+
+				The scan list is a List of start and end x,y coordinates indicating what areas of the
+				Life field have activity to scan, effectively skipping areas that have no possibility of
+				life/death
+
+	Utility
+	
+		.NET Assembly with utility classes used for common things across any project
