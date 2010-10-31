@@ -1,0 +1,5 @@
+#C Creator: SharpLife application
+#C Author : Fred Rosenbaum
+#C Pattern: OOO
+x = 3, y = 1, rule = B3/S23
+3o!
