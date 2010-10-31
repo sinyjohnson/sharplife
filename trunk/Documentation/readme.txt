@@ -1,0 +1,88 @@
+Life Simulator
+
+The Game of Life, also known simply as Life, is a cellular automaton devised 
+by the British mathematician John Horton Conway in 1970. It is the best-known 
+example of a cellular automaton.
+The "game" is a zero-player game, meaning that its evolution is determined by 
+its initial state, requiring no further input from humans. One interacts with 
+the Game of Life by creating an initial configuration and observing how it evolves.
+
+The Life Simulator runs the Conway's Game Of Life.
+See http://en.wikipedia.org/wiki/Conway's_Game_of_Life
+
+This simulator implements what has been defined as Rule B3/S23, which is the classic life algorithm rules.
+Defined at: http://en.wikipedia.org/wiki/Conway's_Game_of_Life#Variations_on_Life
+
+ The Life field for the engines are currently defined where the left and right edges of the field 
+ are stitched together, and the top and bottom edges are also, yielding a toroidal http://en.wikipedia.org/wiki/Torus
+ array. The result is that active areas that move across a field edge reappear at the opposite edge.
+
+This Microsoft Visual Studio 2008 solution consists of 3 projects.
+
+	Life
+		The Life project is a C# Windows Forms Application.
+		This application has not had much done to it in the way of features
+		or optimization, and simply uses a randomly generated start pattern
+		to run the simulation.
+
+	LifeConsole
+		The LifeConsole project is a C# Windows Console Application.
+		This project has had the most work done with regard to features
+		and optimizations and has been used exclusively to develop and 
+		test the SimEngine project that contains the Life logic.
+		
+		The Life Console, when first ran, starts in "Step" mode and will
+		be stopped at the first generation of life. Press "S" to step to
+		the next Life generation.
+		
+		Press the "H" key to display help, and press it again to exit help.
+		The help will display the following:
+		
+		P Pause
+        M Toggle Step Mode
+        S Step
+        H Help
+        X Exit
+
+	SimEngine
+
+		The SimEngine is a C# Assembly Library / DLL that contains the Life
+		Simulator logic. The SimEngine contains three different engine 
+		implementations, but only the first engine is currently used. The
+		other two engines are experiments in optimizations and are not
+		complete.
+		
+		All three engines derive from an abstract base engine class. An
+		abstract class allows for the definition of abstract methods that
+		any deriving class must implement. This allows us to use a common
+		method of accessing all engines without having to make code changes
+		outside of the engine.
+		
+		Some information on the engines
+		
+			Engine1
+				This engine uses two 2 dimensional (2D) integer arrays to represent
+				the life game board. This allows for the Life generation algorithm
+				to determine life, death and birth around a cell by simply looking
+				at the X and Y coordinates around it.
+				
+				This engine also uses a wrap around logic, where the top, bottom and side
+				cells look back or forward across the game board.
+			
+			Engine2
+				This Engine uses a 1 dimensional character array. Using this the engine
+				must find neighbors of a cell by a different method than in a 2 dimensional
+				array. Details of this are in the code method CountNeighbors.
+				
+				An anticipated optimization is to be able to draw the board simply by
+				writing the game board directly to the console with one call, versus
+				the method in Engine1 where each cell must be traversed and converted
+				into a character and added to a string.
+			
+			Engine3
+				This engine uses class objects representing each cell. This engine is
+				the furthest from being complete. The idea is to have each cell able to
+				access its neighbor easily by having a reference to each neighbor available
+				in the cell, and simply asking the neighbor if it is alive, counting each
+				one that is alive and based on the total, becoming alive or dead.
+		
