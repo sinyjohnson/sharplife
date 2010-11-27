@@ -93,6 +93,7 @@ namespace SharpLife
         private void RunToolStripMenuItemClick(object sender, EventArgs e)    { Run();      }
         private void PauseToolStripMenuItemClick(object sender, EventArgs e)  { Pause();    }
         private void StepToolStripMenuItemClick(object sender, EventArgs e)   { Step();     }
+        private void AboutToolStripMenuItemClick(object sender, EventArgs e)  { About();    }
 
         #endregion
 
@@ -104,6 +105,7 @@ namespace SharpLife
         private void ToolStripButtonRunClick(object sender, EventArgs e)   { Run();      }
         private void ToolStripButtonPauseClick(object sender, EventArgs e) { Pause();    }
         private void ToolStripButtonStepClick(object sender, EventArgs e)  { Step();     }
+        private void HelpToolStripButtonClick(object sender, EventArgs e)  { ShowHelp(); }
 
         #endregion
 
@@ -261,6 +263,32 @@ namespace SharpLife
             _engine.NextGeneration();
             Invalidate();
             toolStripStatusLabelGeneration.Text = @"Generation: " + _engine.Generation;
+        }
+
+        #endregion
+
+        #region Method: About
+
+        /// <summary>
+        /// Display the about box
+        /// </summary>
+        private static void About()
+        {
+            AboutBox aboutBox = new AboutBox();
+            aboutBox.ShowDialog();
+        }
+
+        #endregion
+
+        #region Method: ShowHelp
+
+        /// <summary>
+        /// Display help contents
+        /// </summary>
+        private static void ShowHelp()
+        {
+            // TODO Implement the SaveFile method
+            MessageBox.Show(@"Not implemented yet! View the readme.txt file for now.", @"Notice");
         }
 
         #endregion

@@ -112,3 +112,10 @@ This Microsoft Visual Studio 2008 solution consists of the following projects.
 	Utility
 	
 		.NET Assembly with utility classes used for common things across any project
+
+	Installer
+	
+		Nullsoft Install System
+		An NSIS based installer script is included.
+		Using version 2.46
+		http://nsis.sourceforge.net
