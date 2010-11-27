@@ -1,6 +1,12 @@
+TODO
+
+Contains items to do, notes and references used in development, or for possible use or just reference.
+
 This simulator implements what has been defined as Rule B3/S23, which is the classic life algorithm rules
 
 ====================================================================================================================
+Some references
+
 http://en.wikipedia.org/wiki/Conway's_Game_of_Life
 http://dotat.at/prog/life/life.html
 http://developer.download.nvidia.com/SDK/9.5/Samples/samples.html#GL_GameOfLife ( NVidia GeForce2 Ultra 72 million cells per second)
@@ -111,8 +117,9 @@ Format details: http://psoup.math.wisc.edu/mcell/ca_files_formats.html
 
 ====================================================================================================================
 Faster implementations
-unbounded universe using quadtrees
-http://www.drdobbs.com/high-performance-computing/184406478;jsessionid=XM4DQWAW2JH35QE1GHRSKH4ATMY32JVN
+
+unbounded universe using quadtrees: http://www.drdobbs.com/high-performance-computing/184406478
+
 	Each node of the tree represents a square portion of the universe. The leaves of the tree are single bits, 
 	either 1 (alive) or 0 (dead). Each nonleaf node represents a larger square composed of four children, who 
 	are named by their direction from center: nw is the name of the northwest smaller square, ne the northeast 
