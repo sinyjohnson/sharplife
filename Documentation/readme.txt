@@ -19,19 +19,38 @@ Defined at: http://en.wikipedia.org/wiki/Conway's_Game_of_Life#Variations_on_Lif
 
 This Microsoft Visual Studio 2008 solution consists of the following projects.
 
-	Life
+	SharpLife
 	
 		The Life project is a C# Windows Forms Application.
-		This application has not had much done to it in the way of features
-		or optimization, and simply uses a randomly generated start pattern
-		to run the simulation.
 
-	LifeConsole
+		This application currently has simplified operations.
+		
+			File - New		Resets and clears any loaded RLE file.
+			File - Open		Open an RLE based life file.
+			File - Save		Currently not implemented
+			File - Save As	Currently not implemented.
+			
+			Life - Run		Begin running a currently loaded life RLE file.
+			Life - Pause	Pause running of a currently loaded life RLE file.
+			Life - Step		Step once with the currently loaded life RLE file.
+			
+			Help - About	Display the about dialog
+
+	SharpLifeConsole
 	
 		The LifeConsole project is a C# Windows Console Application.
 		This project has had the most work done with regard to features
 		and optimizations and has been used exclusively to develop and 
 		test the SimEngine project that contains the Life logic.
+		
+		Usage:
+			SharpLifeConsole [-engine engine name] [-width n] [-height n] [-mode p|r] -file file name [-help/?]
+			-engine Optional EngineType, Engine1 ...
+			-width  Optional number, if number is greater than the maximum console size, then maximum console size is used
+			-height Optional number, if number is greater than the maximum console size, then maximum console size is used
+			-mode   Optional p=paused r=running
+			-file   Required file name of a supported life file pattern
+			-help/? Optional Display usage
 		
 		The Life Console, when first ran, starts in "Step" mode and will
 		be stopped at the first generation of life. Press "S" to step to
@@ -111,7 +130,7 @@ This Microsoft Visual Studio 2008 solution consists of the following projects.
 
 	Utility
 	
-		.NET Assembly with utility classes used for common things across any project
+		.NET Assembly with utility classes used for common things across the projects
 
 	Installer
 	

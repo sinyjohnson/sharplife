@@ -9,18 +9,23 @@
 ;--------------------------------
 ; General
 
+  !include "FileFunc.nsh"
+
   ; Name and file
   Name "SharpLife"
+  !define APPNAME "SharpLife"
   OutFile "SharpLifeInstall.exe"
 
   ; Default installation folder
-  InstallDir "$LOCALAPPDATA\SharpLife"
+  InstallDir "$LOCALAPPDATA\${APPNAME}"
   
   ; Get installation folder from registry if available
-  InstallDirRegKey HKCU "Software\SharpLife" ""
+  InstallDirRegKey HKCU "Software\${APPNAME}" ""
 
   ; Request application privileges for Windows Vista and Windows 7
   RequestExecutionLevel user
+
+  !define ARP "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APPNAME}"
 
 ;--------------------------------
 ;Variables
@@ -41,7 +46,7 @@
   
   ; Start Menu Folder Page Configuration
   !define MUI_STARTMENUPAGE_REGISTRY_ROOT "HKCU" 
-  !define MUI_STARTMENUPAGE_REGISTRY_KEY "Software\SharpLife" 
+  !define MUI_STARTMENUPAGE_REGISTRY_KEY "Software\${APPNAME}" 
   !define MUI_STARTMENUPAGE_REGISTRY_VALUENAME "Start Menu Folder"
   
   !insertmacro MUI_PAGE_STARTMENU Application $StartMenuFolder
@@ -76,15 +81,33 @@ Section "Required Files" SecDummy
   File "..\..\Patterns\square.rle"
   
   ; Store installation folder
-  WriteRegStr HKCU "Software\SharpLife" "" $INSTDIR
+  WriteRegStr HKCU "Software\${APPNAME}" "" $INSTDIR
   
   ; Create uninstaller
   WriteUninstaller "$INSTDIR\Uninstall.exe"
+
+  ; Add to Add Remove programs
+  WriteRegStr HKCU "${ARP}" "DisplayName" "SharpLife"
+  WriteRegStr HKCU "${ARP}" "InstallLocation" "$INSTDIR"
+  WriteRegStr HKCU "${ARP}" "DisplayIcon" "$INSTDIR\SharpLife.exe,0"
+  WriteRegStr HKCU "${ARP}" "Publisher" "SF Games"
+  WriteRegStr HKCU "${ARP}" "DisplayVersion" "1.0"
+  WriteRegStr HKCU "${ARP}" "HelpLink" "http://code.google.com/p/sharplife/"
+  WriteRegStr HKCU "${ARP}" "URLInfoAbout" "http://code.google.com/p/sharplife/"
+  WriteRegStr HKCU "${ARP}" "UninstallString" "$INSTDIR\Uninstall.exe"
+  WriteRegDWORD HKCU "${ARP}" "NoModify" 1
+  WriteRegDWORD HKCU "${ARP}" "NoRepair" 1
+  
+  ${GetSize} "$INSTDIR" "/S=0K" $0 $1 $2
+  IntFmt $0 "0x%08X" $0
+  WriteRegDWORD HKCU "${ARP}" "EstimatedSize" "$0"
   
   !insertmacro MUI_STARTMENU_WRITE_BEGIN Application
     
     ; Create shortcuts
     CreateDirectory "$SMPROGRAMS\$StartMenuFolder"
+    CreateShortCut "$SMPROGRAMS\$StartMenuFolder\SharpLife.lnk" "$INSTDIR\SharpLife.exe"
+    CreateShortCut "$SMPROGRAMS\$StartMenuFolder\readme.lnk" "$INSTDIR\readme.txt"
     CreateShortCut "$SMPROGRAMS\$StartMenuFolder\Uninstall.lnk" "$INSTDIR\Uninstall.exe"
   
   !insertmacro MUI_STARTMENU_WRITE_END
@@ -108,7 +131,6 @@ SectionEnd
 Section "Uninstall"
 
   ; We be removing these files
-  Delete "$INSTDIR\example2.nsi"
   Delete "$INSTDIR\SharpLife.exe"
   Delete "$INSTDIR\SharpLifeConsole.exe"
   Delete "$INSTDIR\SpeedTestConsole.exe"
@@ -129,8 +151,11 @@ Section "Uninstall"
   !insertmacro MUI_STARTMENU_GETFOLDER Application $StartMenuFolder
     
   Delete "$SMPROGRAMS\$StartMenuFolder\Uninstall.lnk"
+  Delete "$SMPROGRAMS\$StartMenuFolder\readme.lnk"
+  Delete "$SMPROGRAMS\$StartMenuFolder\SharpLife.lnk"
   RMDir "$SMPROGRAMS\$StartMenuFolder"
   
-  DeleteRegKey /ifempty HKCU "Software\SharpLife"
+  DeleteRegKey /ifempty HKCU "Software\${APPNAME}"
+  DeleteRegKey HKCU "${ARP}"
 
 SectionEnd
