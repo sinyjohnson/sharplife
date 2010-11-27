@@ -27,6 +27,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpeedTestConsole", "SpeedTe
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utility", "Utility\Utility.csproj", "{29F961F8-A9FA-4E6E-A509-9D71356F53BE}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Installer", "Installer", "{BA96DB9A-C4BC-4F5A-B46C-3C4227363CE7}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NSIS", "NSIS", "{4AB041B2-DED3-4A63-9915-D85BDA91390F}"
+	ProjectSection(SolutionItems) = preProject
+		Installer\NSIS\SharpLifeInstall.nsi = Installer\NSIS\SharpLifeInstall.nsi
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -90,5 +97,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{4AB041B2-DED3-4A63-9915-D85BDA91390F} = {BA96DB9A-C4BC-4F5A-B46C-3C4227363CE7}
 	EndGlobalSection
 EndGlobal
