@@ -49,12 +49,12 @@ namespace SharpLifeConsole
         /// 
         /// Usage:
         ///     SharpLifeConsole [-engine engine name] [-width n] [-height n] [-mode p|r] [-file file name] [-help/?]
-        ///         -engine EngineType, Engine1 ...
-        ///         -width  number, if number is greater than the maximum console size, then maximum console size is used
-        ///         -height number, if number is greater than the maximum console size, then maximum console size is used
-        ///         -mode   p=paused r=running
-        ///         -file   file name of a supported life file pattern
-        ///         -help/? Display usage
+        ///         -engine Optional EngineType, Engine1 ...
+        ///         -width  Optional number, if number is greater than the maximum console size, then maximum console size is used
+        ///         -height Optional number, if number is greater than the maximum console size, then maximum console size is used
+        ///         -mode   Optional p=paused r=running
+        ///         -file   Required file name of a supported life file pattern
+        ///         -help/? Optional Display usage
         /// </summary>
         static void Main(string[] args)
         {
@@ -308,12 +308,13 @@ namespace SharpLifeConsole
         private static void Usage()
         {
             Console.WriteLine("Usage:");
-            Console.WriteLine("     SharpLifeConsole [-engine engine name] [-width n] [-height n] [-mode p|r] [-file file name] [-help/?]");
-            Console.WriteLine("         -engine EngineType, Engine1 ...");
-            Console.WriteLine("         -width  number, if number is greater than the maximum console size, then maximum console size is used");
-            Console.WriteLine("         -height number, if number is greater than the maximum console size, then maximum console size is used");
-            Console.WriteLine("         -mode   p=paused r=running");
-            Console.WriteLine("         -file   file name of a supported life file pattern");
+            Console.WriteLine("     SharpLifeConsole [-engine engine name] [-width n] [-height n] [-mode p|r] -file file name [-help/?]");
+            Console.WriteLine("         -engine Optional EngineType, Engine1 ...");
+            Console.WriteLine("         -width  Optional number, if number is greater than the maximum console size, then maximum console size is used");
+            Console.WriteLine("         -height Optional number, if number is greater than the maximum console size, then maximum console size is used");
+            Console.WriteLine("         -mode   Optional p=paused r=running");
+            Console.WriteLine("         -file   Required file name of a supported life file pattern");
+            Console.WriteLine("         -help/? Optional Display usage");
         }
 
         #endregion:
