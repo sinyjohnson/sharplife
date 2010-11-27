@@ -3,14 +3,17 @@
 
 = Road Map =
 
-== Version 1.0 ==
+== Version 1.1 ==
 
 
 = Details =
 
 Looking to do the following:
-  * Loading/Saving of Various "Standard" Life file formats
-  * Maybe a simple Windows installer, though no installation is (yet) required.
+  * Loading/Saving of Various "Standard" Life file formats, basic load of RLE files complete in version 1.0
+  * Smarter install
+  * Editing
+  * Zoom
+  * Engine Completions
 
 == Versions beyond ==
 
