@@ -1,0 +1,21 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="SimEngine.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="UNSUPPORTED_TYPE" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Unsupported automata type</Value>
+    </Setting>
+    <Setting Name="COORDINATES_TOO_BIG" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Coordinates to big for game board</Value>
+    </Setting>
+    <Setting Name="NO_COORDINATES" Type="System.String" Scope="User">
+      <Value Profile="(Default)">No coordinates specified in the file</Value>
+    </Setting>
+    <Setting Name="INVALID_SIZE" Type="System.String" Scope="User">
+      <Value Profile="(Default)">The game board has an invalid width and or height</Value>
+    </Setting>
+    <Setting Name="INVALID_ROW" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Invalid row read, expected number to indicate a run</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

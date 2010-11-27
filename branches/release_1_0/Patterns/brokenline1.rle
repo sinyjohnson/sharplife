@@ -1,0 +1,5 @@
+#C Creator: SharpLife application
+#C Author : Fred Rosenbaum
+#C Pattern: OOOOOOOOxxOOOOOxxxxOOOxxxxxxxOOOOOOOxxOOOOO
+x = 44, y = 1, rule = B3/S23
+8o2b5o4b3o7b7o2b5o!
