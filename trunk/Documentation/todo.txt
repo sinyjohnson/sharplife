@@ -125,3 +125,7 @@ unbounded universe using quadtrees: http://www.drdobbs.com/high-performance-comp
 	are named by their direction from center: nw is the name of the northwest smaller square, ne the northeast 
 	smaller square, and so on. The level of a node is the distance to the leaves; the leaves are at level 0. 
 	A node at level n thus represents a square of size 2n on each edge.
+
+====================================================================================================================
+Multi core CPU and GPU array operations with Microsoft Research Accelerator V2
+http://research.microsoft.com/en-us/projects/Accelerator/
