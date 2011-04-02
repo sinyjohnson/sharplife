@@ -56,7 +56,7 @@ namespace SimEngine.Engines
         #region Fields
 
         private List<Cell> _cells;
-        private readonly List<Cell> _workCells;
+        private List<Cell> _workCells;
         private readonly int _length;
 
         #endregion
@@ -103,24 +103,34 @@ namespace SimEngine.Engines
                     * NorthWest  = Neighbour 1 x-1, y-1
                     */
 
-                    Cell c = GetCellObj(x, y);
+                    Cell c1 = GetCellObj(x, y, ref _cells);
+                    Cell c2 = GetCellObj(x, y, ref _workCells);
                     int negX = (x - 1 + Width) % (Width);
                     int posX = (x + 1) % Width;
                     int negY = (y - 1 + Height) % (Height);
                     int posY = (y + 1) % Height;
 
-                    c.N = GetCellObj(x, negY);
-                    c.Ne = GetCellObj(posX, negY);
-                    c.E = GetCellObj(posX, y);
-                    c.Se = GetCellObj(posX, posY);
-                    c.S = GetCellObj(x, posY);
-                    c.Sw = GetCellObj(negX, posY);
-                    c.W = GetCellObj(negX, y);
-                    c.Nw = GetCellObj(negX, negY);
+                    c1.N = GetCellObj(x, negY, ref _cells);
+                    c1.Ne = GetCellObj(posX, negY, ref _cells);
+                    c1.E = GetCellObj(posX, y, ref _cells);
+                    c1.Se = GetCellObj(posX, posY, ref _cells);
+                    c1.S = GetCellObj(x, posY, ref _cells);
+                    c1.Sw = GetCellObj(negX, posY, ref _cells);
+                    c1.W = GetCellObj(negX, y, ref _cells);
+                    c1.Nw = GetCellObj(negX, negY, ref _cells);
+
+                    c2.N = GetCellObj(x, negY, ref _workCells);
+                    c2.Ne = GetCellObj(posX, negY, ref _workCells);
+                    c2.E = GetCellObj(posX, y, ref _workCells);
+                    c2.Se = GetCellObj(posX, posY, ref _workCells);
+                    c2.S = GetCellObj(x, posY, ref _workCells);
+                    c2.Sw = GetCellObj(negX, posY, ref _workCells);
+                    c2.W = GetCellObj(negX, y, ref _workCells);
+                    c2.Nw = GetCellObj(negX, negY, ref _workCells);
                 }
             }
 
-            _workCells = _cells;
+            CopyCells(ref _cells, ref _workCells);
         }
 
         #endregion
@@ -251,7 +261,7 @@ namespace SimEngine.Engines
                 }
             }
 
-            _cells = _workCells;
+            CopyCells(ref _workCells, ref _cells);
         }
 
         #endregion
@@ -277,10 +287,31 @@ namespace SimEngine.Engines
         /// </summary>
         /// <param name="x"></param>
         /// <param name="y"></param>
+        /// <param name="cells"></param>
         /// <returns></returns>
-        private Cell GetCellObj(int x, int y)
+        private Cell GetCellObj(int x, int y, ref List<Cell> cells)
         {
-            return _cells[y * Width + x];
+            return cells[y * Width + x];
+        }
+
+        #endregion
+
+        #region Method: CopyCells
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="destination"></param>
+        private static void CopyCells(ref List<Cell> source, ref List<Cell> destination)
+        {
+            // Both lists must be same length
+            if (source.Count != destination.Count) throw new Exception("The given Lists are not of equal length");
+
+            for (int x=0; x < source.Count; x++)
+            {
+                destination[x].Alive = source[x].Alive;
+            }
         }
 
         #endregion
