@@ -1,12 +1,6 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 10.00
-# Visual Studio 2008
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharpLife", "SharpLife\SharpLife.csproj", "{3EB4926A-7558-45A3-9B98-7D141F095220}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharpLifeConsole", "SharpLifeConsole\SharpLifeConsole.csproj", "{0018BD8B-94E8-4B4A-86C5-72C5C3EDB474}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimEngine", "SimEngine\SimEngine.csproj", "{FA7A38D4-48C3-4FBE-AB9B-B5C310B99141}"
-EndProject
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentation", "{62C5F4D4-17DB-4EB1-A1CB-ED3FDC656FE9}"
 	ProjectSection(SolutionItems) = preProject
 		Documentation\license.txt = Documentation\license.txt
@@ -23,16 +17,22 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Patterns", "Patterns", "{A4
 		Patterns\square.rle = Patterns\square.rle
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpeedTestConsole", "SpeedTestConsole\SpeedTestConsole.csproj", "{4F298DE6-322B-46B1-ABDA-EFE6A9EFEFDF}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utility", "Utility\Utility.csproj", "{29F961F8-A9FA-4E6E-A509-9D71356F53BE}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Installer", "Installer", "{BA96DB9A-C4BC-4F5A-B46C-3C4227363CE7}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NSIS", "NSIS", "{4AB041B2-DED3-4A63-9915-D85BDA91390F}"
 	ProjectSection(SolutionItems) = preProject
 		Installer\NSIS\SharpLifeInstall.nsi = Installer\NSIS\SharpLifeInstall.nsi
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharpLife", "SharpLife\SharpLife.csproj", "{3EB4926A-7558-45A3-9B98-7D141F095220}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharpLifeConsole", "SharpLifeConsole\SharpLifeConsole.csproj", "{0018BD8B-94E8-4B4A-86C5-72C5C3EDB474}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimEngine", "SimEngine\SimEngine.csproj", "{FA7A38D4-48C3-4FBE-AB9B-B5C310B99141}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpeedTestConsole", "SpeedTestConsole\SpeedTestConsole.csproj", "{4F298DE6-322B-46B1-ABDA-EFE6A9EFEFDF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utility", "Utility\Utility.csproj", "{29F961F8-A9FA-4E6E-A509-9D71356F53BE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
