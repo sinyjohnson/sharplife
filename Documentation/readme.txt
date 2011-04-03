@@ -10,6 +10,10 @@ the Game of Life by creating an initial configuration and observing how it evolv
 The Life Simulator runs the Conway's Game Of Life.
 See http://en.wikipedia.org/wiki/Conway's_Game_of_Life
 
+Additional resources:
+Golly Life Application		http://golly.sourceforge.net/
+Life Wiki					http://www.conwaylife.com/wiki/index.php?title=Main_Page
+
 This simulator implements what has been defined as Rule B3/S23, which is the classic life algorithm rules.
 Defined at: http://en.wikipedia.org/wiki/Conway's_Game_of_Life#Variations_on_Life
 
