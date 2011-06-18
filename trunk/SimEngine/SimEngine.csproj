@@ -10,8 +10,9 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>SimEngine</RootNamespace>
     <AssemblyName>SimEngine</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -46,6 +47,7 @@
     <Compile Include="Engines\Engine2.cs" />
     <Compile Include="Engines\Engine3.cs" />
     <Compile Include="Engines\Engine4.cs" />
+    <Compile Include="Engines\Engine5.cs" />
     <Compile Include="FileObject.cs" />
     <Compile Include="LifeEngine.cs" />
     <Compile Include="Point2d.cs" />
