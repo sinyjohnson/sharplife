@@ -16,7 +16,7 @@
 */
 #endregion
 
-using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace SimEngine.Engines
@@ -24,14 +24,21 @@ namespace SimEngine.Engines
     /// <summary>
     /// Engine uses a 2 Dimensional int array
     /// The Life field wraps around at the sides, tops and corners, i.e a toroidal array
-    /// This engine is basically Engine1 but with Parallel.For array processing
-    /// </summary>
+    /// This engine is basically Engine4 but with Parallel.For array processing on the 
+    /// outer y loop in NextGeneration.
+    /// Only outer loop in parallel according to Potential Pitfalls in Data and Task Parallelism
+    /// http://msdn.microsoft.com/en-us/library/dd997392.aspx
+    /// 
+    /// This engine is running slightly faster than Engine4 (Engine4 is the fastest of all
+    /// of the engines except for this one)
+    ///  </summary>
     public class Engine5 : LifeEngine
     {
         #region Fields
 
         private readonly int[,] _cells;
         private readonly int[,] _workCells;
+        private List<CoordinatePair> _scanList = new List<CoordinatePair>();
 
         #endregion
 
@@ -46,6 +53,9 @@ namespace SimEngine.Engines
         {
             _cells = new int[Width, Height];
             _workCells = new int[Width, Height];
+            
+            // Initialize the scan list to check the entire field
+            _scanList.Add(new CoordinatePair(new Point2D(0, 0), new Point2D(Width-1, Height-1)));
         }
 
         #endregion
@@ -58,7 +68,7 @@ namespace SimEngine.Engines
         /// <returns></returns>
         public override string Title()
         {
-            return @"2D Parallel integer array engine";
+            return @"2D integer array engine with scan list and Parallel.For";
         }
 
         #endregion
@@ -71,7 +81,7 @@ namespace SimEngine.Engines
         /// <returns></returns>
         public override string Summary()
         {
-            return @"Uses a 2D integer array and scans the entire array each generation using Parallel.For. Life field wraps around at the sides, tops and corners, i.e a toroidal array";
+            return @"Uses a 2D integer array. A list of cells to scan is used to skip over dead space. Uses Parallel.For Life field wraps around at the sides, tops and corners, i.e a toroidal array";
         }
 
         #endregion
@@ -156,31 +166,68 @@ namespace SimEngine.Engines
         /// </summary>
         public override void NextGeneration()
         {
-            StopWatch.Start();
+            //StopWatch.Start();
             Generation++;
 
-            Parallel.For(0, Height-1, (y) => Parallel.For(0, Width-1, (x) =>
+            // TODO Use scan list
+            // Prepare to rebuild the scan list as we process the main scan list
+            // Start by assuming we will need to scan the entire field next generation
+            List<CoordinatePair> newScanList = new List<CoordinatePair>();
+            CoordinatePair coordinate = new CoordinatePair(0, 0, Width - 1, Height - 1);
+            bool findingStartCoordinate = true;
+
+            // While having CoordinatePairs
+            foreach (CoordinatePair coordinatePair in _scanList)
             {
-                int neighbours = CountNeighbours(x, y);
-
-                if (_cells[x, y] == 1)
+                CoordinatePair pair = coordinatePair;
+                Parallel.For(coordinatePair.Start.Y, coordinatePair.Stop.Y, (y) =>
                 {
-                    if (neighbours < 2 || neighbours > 3) _workCells[x, y] = 0;
-                    else _workCells[x, y] = 1;
-                }
-                else
-                {
-                    if (neighbours == 3)
-                        _workCells[x, y] = 1;
-                }
-            }));
+                    for (int x = pair.Start.X; x <= pair.Stop.X; x++)
+                    {
+                        // Determine life
+                        // Build new scan list entries
+                        int neighbours = CountNeighbours(x, y);
+                        findingStartCoordinate = neighbours == 0;
 
-            // C# is week with multi-dimensional arrays, copy the hard way
+                        if (findingStartCoordinate)
+                        {
+                            coordinate.Start.X = x;
+                            coordinate.Start.Y = y;
+                        }
+                        else
+                        {
+                            coordinate.Stop.X = x;
+                            coordinate.Stop.Y = y;
+                        }
+
+                        // Live cell
+                        if (_cells[x, y] == 1)
+                        {
+                            // Any live cell with fewer than two live neighbors' dies, as if caused by under population.
+                            // Any live cell with more than three live neighbors' dies, as if by overcrowding.
+                            if (neighbours < 2 || neighbours > 3) _workCells[x, y] = 0;
+                            // Any live cell with two or three live neighbors' lives on to the next generation.
+                            else _workCells[x, y] = 1;
+                        }
+                        else
+                        {
+                            // Any dead cell with exactly three live neighbors' becomes a live cell.
+                            if (neighbours == 3)
+                                _workCells[x, y] = 1;
+                        }
+                    }
+                });
+            }
+
+            // C# is weak with multi-dimensional arrays, copy the hard way
             CopyCells(_workCells, _cells, Width, Height);
 
-            StopWatch.Stop();
-            TotalTime += StopWatch.ElapsedMilliseconds;
-            StopWatch.Reset();
+            // Set the scan list to our new rebuilt scan list
+            _scanList = newScanList;
+
+            //StopWatch.Stop();
+            //TotalTime += StopWatch.ElapsedMilliseconds;
+            //StopWatch.Reset();
         }
 
         #endregion

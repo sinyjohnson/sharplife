@@ -218,7 +218,7 @@ namespace SimEngine.Engines
                 }
             }
 
-            // C# is week with multi-dimensional arrays, copy the hard way
+            // C# is weak with multi-dimensional arrays, copy the hard way
             CopyCells(_workCells, _cells, Width, Height);
 
             // Set the scan list to our new rebuilt scan list

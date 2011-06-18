@@ -69,6 +69,8 @@ namespace SpeedTestConsole
                     case "engine1": _engine = CreateEngine(EngineType.Engine1, Width, Height); break;
                     case "engine2": _engine = CreateEngine(EngineType.Engine2, Width, Height); break;
                     case "engine3": _engine = CreateEngine(EngineType.Engine3, Width, Height); break;
+                    case "engine4": _engine = CreateEngine(EngineType.Engine4, Width, Height); break;
+                    case "engine5": _engine = CreateEngine(EngineType.Engine5, Width, Height); break;
                     default: _engine = CreateEngine(EngineType.Engine1, Width, Height); break;
                 }
             }
@@ -107,6 +109,8 @@ namespace SpeedTestConsole
             {
                 case EngineType.Engine2: return new Engine2(width, height);
                 case EngineType.Engine3: return new Engine3(width, height);
+                case EngineType.Engine4: return new Engine4(width, height);
+                case EngineType.Engine5: return new Engine5(width, height);
                 default: return new Engine1(width, height);
             }
         }

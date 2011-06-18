@@ -130,7 +130,17 @@ This Microsoft Visual Studio 2010 solution consists of the following projects.
 
 				The scan list is a List of start and end x,y coordinates indicating what areas of the
 				Life field have activity to scan, effectively skipping areas that have no possibility of
-				life/death
+				life/death.
+
+				Engine4 is currently the fastest implementation.
+				Engine4 has not yet had the scan list implemented.
+
+			Engine5
+
+				Is the same as Engine4 but uses .NET Parallel Task Library's Parallel.For on the outer
+				x loop traversal in the NextGeneration() method.
+
+				It is currently slightly faster than Engine4
 
 	Utility
 	

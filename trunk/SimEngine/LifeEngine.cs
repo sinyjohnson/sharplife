@@ -22,7 +22,7 @@ namespace SimEngine
 {
     #region Enum: EngineType
 
-    public enum EngineType { Engine1, Engine2, Engine3, Engine4 }
+    public enum EngineType { Engine1, Engine2, Engine3, Engine4, Engine5 }
 
     #endregion
 
