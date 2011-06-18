@@ -1,6 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <StartArguments>-engine Engine3</StartArguments>
+    <StartArguments>-engine Engine5 -file "../../Patterns/die658.rle"</StartArguments>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
+    <StartArguments>-engine Engine5 -file "../../Patterns/die658.rle"</StartArguments>
   </PropertyGroup>
 </Project>

@@ -55,7 +55,7 @@ namespace SharpLife
             _thisToolStripStatusLabelGeneration = toolStripStatusLabelGeneration;
             
             // TODO Add a drop down control to allow user to select the Life Engine to use
-            _engine = CreateEngine(EngineType.Engine1, Width, Height);
+            _engine = CreateEngine(EngineType.Engine5, Width, Height);
             _timer.Tick += TimerEventProcessor;
             _timer.Interval = 10;
         }
@@ -76,7 +76,8 @@ namespace SharpLife
             {
                 case EngineType.Engine2: return new Engine2(width, height);
                 case EngineType.Engine3: return new Engine3(width, height);
-                case EngineType.Engine4: return new Engine3(width, height);
+                case EngineType.Engine4: return new Engine4(width, height);
+                case EngineType.Engine5: return new Engine5(width, height);
                 default: return new Engine1(width, height);
             }
         }
