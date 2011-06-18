@@ -75,7 +75,7 @@ namespace SimEngine.Engines
         #region Method: Summary
 
         /// <summary>
-        /// Returns asummary of engine implementation information
+        /// Returns a summary of engine implementation information
         /// </summary>
         /// <returns></returns>
         public override string Summary()
@@ -158,14 +158,14 @@ namespace SimEngine.Engines
         /// <summary>
         /// Compute the next generation using the below rules
         /// 
-        /// Any live cell with fewer than two live neighbours dies, as if caused by underpopulation.
-        /// Any live cell with more than three live neighbours dies, as if by overcrowding.
-        /// Any live cell with two or three live neighbours lives on to the next generation.
-        /// Any dead cell with exactly three live neighbours becomes a live cell.
+        /// Any live cell with fewer than two live neighbors' dies, as if caused by under population.
+        /// Any live cell with more than three live neighbors' dies, as if by overcrowding.
+        /// Any live cell with two or three live neighbors' lives on to the next generation.
+        /// Any dead cell with exactly three live neighbors' becomes a live cell.
         /// </summary>
         public override void NextGeneration()
         {
-            _stopWatch.Start();
+            StopWatch.Start();
             Generation++;
 
             // TODO Use scan list
@@ -179,9 +179,9 @@ namespace SimEngine.Engines
             foreach (CoordinatePair coordinatePair in _scanList)
             {
                 // Loop over start y, and x until the end y and x
-                for (int y = coordinatePair._start._y; y <= coordinatePair._stop._y; y++)
+                for (int y = coordinatePair.Start.Y; y <= coordinatePair.Stop.Y; y++)
                 {
-                    for (int x = coordinatePair._start._x; x <= coordinatePair._stop._x; x++)
+                    for (int x = coordinatePair.Start.X; x <= coordinatePair.Stop.X; x++)
                     {
                         // Determine life
                         // Build new scan list entries
@@ -190,27 +190,27 @@ namespace SimEngine.Engines
 
                         if (findingStartCoordinate)
                         {
-                            coordinate._start._x = x;
-                            coordinate._start._y = y;
+                            coordinate.Start.X = x;
+                            coordinate.Start.Y = y;
                         }
                         else
                         {
-                            coordinate._stop._x = x;
-                            coordinate._stop._y = y;
+                            coordinate.Stop.X = x;
+                            coordinate.Stop.Y = y;
                         }
 
                         // Live cell
                         if (_cells[x, y] == 1)
                         {
-                            // Any live cell with fewer than two live neighbours dies, as if caused by underpopulation.
-                            // Any live cell with more than three live neighbours dies, as if by overcrowding.
+                            // Any live cell with fewer than two live neighbors' dies, as if caused by under population.
+                            // Any live cell with more than three live neighbors' dies, as if by overcrowding.
                             if (neighbours < 2 || neighbours > 3) _workCells[x, y] = 0;
-                            // Any live cell with two or three live neighbours lives on to the next generation.
+                            // Any live cell with two or three live neighbors' lives on to the next generation.
                             else _workCells[x, y] = 1;
                         }
                         else
                         {
-                            // Any dead cell with exactly three live neighbours becomes a live cell.
+                            // Any dead cell with exactly three live neighbors' becomes a live cell.
                             if (neighbours == 3)
                                 _workCells[x, y] = 1;
                         }
@@ -224,9 +224,9 @@ namespace SimEngine.Engines
             // Set the scan list to our new rebuilt scan list
             _scanList = newScanList;
 
-            _stopWatch.Stop();
-            TotalTime += _stopWatch.ElapsedMilliseconds;
-            _stopWatch.Reset();
+            StopWatch.Stop();
+            TotalTime += StopWatch.ElapsedMilliseconds;
+            StopWatch.Reset();
         }
 
         #endregion
@@ -246,14 +246,14 @@ namespace SimEngine.Engines
                 8 c 4
                 7 6 5
             * From top left around clockwise
-            * Neighbour 1 x-1, y-1
-            * Neighbour 2 x,   y-1
-            * Neighbour 3 x+1, y-1
-            * Neighbour 4 x+1, y
-            * Neighbour 5 x+1, y+1
-            * Neighbour 6 x,   y+1
-            * Neighbour 7 x-1, y+1
-            * Neighbour 8 x-1, y
+            * Neighbor 1 x-1, y-1
+            * Neighbor 2 x,   y-1
+            * Neighbor 3 x+1, y-1
+            * Neighbor 4 x+1, y
+            * Neighbor 5 x+1, y+1
+            * Neighbor 6 x,   y+1
+            * Neighbor 7 x-1, y+1
+            * Neighbor 8 x-1, y
             */
 
             int negX = (x - 1 + Width) % (Width);

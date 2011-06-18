@@ -21,7 +21,7 @@ Defined at: http://en.wikipedia.org/wiki/Conway's_Game_of_Life#Variations_on_Lif
  are stitched together, and the top and bottom edges are also, yielding a toroidal http://en.wikipedia.org/wiki/Torus
  array. The result is that active areas that move across a field edge reappear at the opposite edge.
 
-This Microsoft Visual Studio 2008 solution consists of the following projects.
+This Microsoft Visual Studio 2010 solution consists of the following projects.
 
 	SharpLife
 	
@@ -76,7 +76,7 @@ This Microsoft Visual Studio 2008 solution consists of the following projects.
 		Usage: SpeedTestConsole -engine [engine name]
 			-engine  Optional engine name. If none given, then Engine1 is used.
 				Engine names are in the format EngineN where N is an integer.
-				If a given engine number does not esist, the application exists.
+				If a given engine number does not exist, the application exists.
 
 	SimEngine
 

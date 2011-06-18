@@ -14,7 +14,7 @@ http://members.tip.net.au/~dbell/ hashlife implementation
 
 
 ====================================================================================================================
-Use .NET Reflector to see code as is and with inlining of CountNeighbours
+Use .NET Reflector to see code as is and with in-lining of CountNeighbours
 
 ====================================================================================================================
 SkipTable or SkipCache
@@ -109,7 +109,7 @@ Format details: http://psoup.math.wisc.edu/mcell/ca_files_formats.html
 	keyword/value pairs. The keywords currently supported are "Pos", which denotes the absolute position of the upper 
 	left cell (which may be on or off), and "Gen", which denotes the generation count. For instance, 
 	#CXRLE Pos=0,-1377 Gen=3480106827776 
-	indicates that the upper left corner of the enclosing rectange is at an X coordinate of 0 and a Y coordinate 
+	indicates that the upper left corner of the enclosing rectangle is at an X coordinate of 0 and a Y coordinate 
 	of -1377, and that the pattern stored is at generation 3,480,106,827,776. 
 	All comment lines that are not CXRLE lines, and occur at the top or bottom of the file, are treated as 
 	information lines and are displayed when the user clicks the "information" button in Golly's tool bar. 
@@ -129,3 +129,9 @@ unbounded universe using quadtrees: http://www.drdobbs.com/high-performance-comp
 ====================================================================================================================
 Multi core CPU and GPU array operations with Microsoft Research Accelerator V2
 http://research.microsoft.com/en-us/projects/Accelerator/
+
+CUDAfy .NET – General Purpose GPU on .NET
+http://www.hybriddsp.com/
+
+Using Cudafy for GPGPU Programming in .NET
+http://www.codeproject.com/KB/Parallel_Programming/UsingCudafyGPGPUProg.aspx

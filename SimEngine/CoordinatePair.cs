@@ -20,17 +20,19 @@ namespace SimEngine
 {
     public struct CoordinatePair
     {
-        public Point2D _start;
-        public Point2D _stop;
+        public Point2D Start;
+        public Point2D Stop;
+
         public CoordinatePair(Point2D start, Point2D stop)
         {
-            _start = start;
-            _stop = stop;
+            Start = start;
+            Stop = stop;
         }
+
         public CoordinatePair(int x1, int y1, int x2, int y2)
         {
-            _start = new Point2D(x1, y1);
-            _stop = new Point2D(x2, y2);
+            Start = new Point2D(x1, y1);
+            Stop = new Point2D(x2, y2);
         }
     }
 }

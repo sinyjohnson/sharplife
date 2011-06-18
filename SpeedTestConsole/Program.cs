@@ -31,10 +31,10 @@ namespace SpeedTestConsole
 
         private static LifeEngine _engine;
         private static Timer _timer1Sec;
-        private const double ONE_SECOND = 500;
-        private const int WIDTH = 100;
-        private const int HEIGHT = 100;
-        private const int NUM_CELLS = WIDTH*HEIGHT;
+        private const double OneSecond = 500;
+        private const int Width = 100;
+        private const int Height = 100;
+        private const int NumCells = Width*Height;
         private static bool _pause;
         private static bool _exit;
 
@@ -46,14 +46,14 @@ namespace SpeedTestConsole
         /// Usage: SpeedTestConsole -engine [engine name]
         ///        -engine  Optional engine name. If none given, then Engine1 is used.
         ///                 Engine names are in the format EngineN where N is an integer.
-        ///                 If a given engine number does not esist, the application exists.
+        ///                 If a given engine number does not exist, the application exists.
         /// </summary>
         /// <param name="args"></param>
         static void Main(string[] args)
         {
             _pause = true;
             _exit = false;
-            _timer1Sec = new Timer { Interval = ONE_SECOND };
+            _timer1Sec = new Timer { Interval = OneSecond };
             _timer1Sec.Elapsed += CellsPerSecond;
             _timer1Sec.Start();
 
@@ -66,14 +66,14 @@ namespace SpeedTestConsole
             {
                 switch (CommandLineProcessor.Value("engine").ToLower())
                 {
-                    case "engine1": _engine = CreateEngine(EngineType.Engine1, WIDTH, HEIGHT); break;
-                    case "engine2": _engine = CreateEngine(EngineType.Engine2, WIDTH, HEIGHT); break;
-                    case "engine3": _engine = CreateEngine(EngineType.Engine3, WIDTH, HEIGHT); break;
-                    default: _engine = CreateEngine(EngineType.Engine1, WIDTH, HEIGHT); break;
+                    case "engine1": _engine = CreateEngine(EngineType.Engine1, Width, Height); break;
+                    case "engine2": _engine = CreateEngine(EngineType.Engine2, Width, Height); break;
+                    case "engine3": _engine = CreateEngine(EngineType.Engine3, Width, Height); break;
+                    default: _engine = CreateEngine(EngineType.Engine1, Width, Height); break;
                 }
             }
             else
-                _engine = CreateEngine(EngineType.Engine1, WIDTH, HEIGHT);
+                _engine = CreateEngine(EngineType.Engine1, Width, Height);
 
             #endregion
 
@@ -127,7 +127,7 @@ namespace SpeedTestConsole
             {
                 if (!_pause)
                 {
-                    int cellsPerSecond = NUM_CELLS * _engine.Generation;
+                    int cellsPerSecond = NumCells * _engine.Generation;
 
                     Console.SetCursorPosition(0, 3);
                     Console.Write("Engine:                 " + _engine.GetType());

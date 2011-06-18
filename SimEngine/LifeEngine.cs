@@ -33,22 +33,15 @@ namespace SimEngine
     /// </summary>
     public abstract class LifeEngine
     {
-        protected Stopwatch _stopWatch = new Stopwatch();
+        protected Stopwatch StopWatch = new Stopwatch();
 
         #region Properties
 
         public int Width { get; set; }
         public int Height { get; set; }
         public int Generation { get; set; }
-
         public long TotalTime { get; set; }
-        public long AvgTimePerGeneration
-        {
-            get
-            {
-                return TotalTime/Generation;
-            }
-        }
+        public long AvgTimePerGeneration { get { return TotalTime/Generation; } }
 
         #endregion
 
