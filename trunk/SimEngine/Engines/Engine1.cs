@@ -65,7 +65,7 @@ namespace SimEngine.Engines
         #region Method: Summary
 
         /// <summary>
-        /// Returns asummary of engine implementation information
+        /// Returns a summary of engine implementation information
         /// </summary>
         /// <returns></returns>
         public override string Summary()
@@ -148,14 +148,14 @@ namespace SimEngine.Engines
         /// <summary>
         /// Compute the next generation using the below rules
         /// 
-        /// Any live cell with fewer than two live neighbours dies, as if caused by underpopulation.
-        /// Any live cell with more than three live neighbours dies, as if by overcrowding.
-        /// Any live cell with two or three live neighbours lives on to the next generation.
-        /// Any dead cell with exactly three live neighbours becomes a live cell.
+        /// Any live cell with fewer than two live neighbors' dies, as if caused by under population.
+        /// Any live cell with more than three live neighbors' dies, as if by overcrowding.
+        /// Any live cell with two or three live neighbors' lives on to the next generation.
+        /// Any dead cell with exactly three live neighbors' becomes a live cell.
         /// </summary>
         public override void NextGeneration()
         {
-            _stopWatch.Start();
+            StopWatch.Start();
             Generation++;
 
             for (int y = 0; y < Height; y++)
@@ -167,15 +167,15 @@ namespace SimEngine.Engines
                     // Live cell
                     if (_cells[x, y] == 1)
                     {
-                        // Any live cell with fewer than two live neighbours dies, as if caused by underpopulation.
-                        // Any live cell with more than three live neighbours dies, as if by overcrowding.
+                        // Any live cell with fewer than two live neighbors' dies, as if caused by under population.
+                        // Any live cell with more than three live neighbors' dies, as if by overcrowding.
                         if (neighbours < 2 || neighbours > 3) _workCells[x, y] = 0;
-                        // Any live cell with two or three live neighbours lives on to the next generation.
+                        // Any live cell with two or three live neighbors' lives on to the next generation.
                         else _workCells[x, y] = 1;
                     }
                     else
                     {
-                        // Any dead cell with exactly three live neighbours becomes a live cell.
+                        // Any dead cell with exactly three live neighbors' becomes a live cell.
                         if (neighbours == 3)
                             _workCells[x, y] = 1;
                     }
@@ -185,9 +185,9 @@ namespace SimEngine.Engines
             // C# is week with multi-dimensional arrays, copy the hard way
             CopyCells(_workCells, _cells, Width, Height);
 
-            _stopWatch.Stop();
-            TotalTime += _stopWatch.ElapsedMilliseconds;
-            _stopWatch.Reset();
+            StopWatch.Stop();
+            TotalTime += StopWatch.ElapsedMilliseconds;
+            StopWatch.Reset();
         }
 
         #endregion
@@ -207,14 +207,14 @@ namespace SimEngine.Engines
                 8 c 4
                 7 6 5
             * From top left around clockwise
-            * Neighbour 1 x-1, y-1
-            * Neighbour 2 x,   y-1
-            * Neighbour 3 x+1, y-1
-            * Neighbour 4 x+1, y
-            * Neighbour 5 x+1, y+1
-            * Neighbour 6 x,   y+1
-            * Neighbour 7 x-1, y+1
-            * Neighbour 8 x-1, y
+            * Neighbor 1 x-1, y-1
+            * Neighbor 2 x,   y-1
+            * Neighbor 3 x+1, y-1
+            * Neighbor 4 x+1, y
+            * Neighbor 5 x+1, y+1
+            * Neighbor 6 x,   y+1
+            * Neighbor 7 x-1, y+1
+            * Neighbor 8 x-1, y
             */
 
             int negX = (x - 1 + Width) % (Width);

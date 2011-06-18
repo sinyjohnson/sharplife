@@ -99,7 +99,7 @@ namespace Utility
                         sCommand = sCommand.Remove(0, 1);
                 }
 
-                // Check composit command=value
+                // Check composite command=value
                 if (sCommand.IndexOf('=') != -1)
                 {
                     sValue = sCommand.Substring(sCommand.IndexOf('=') + 1, sCommand.Length - sCommand.IndexOf('=') - 1);

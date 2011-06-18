@@ -93,14 +93,14 @@ namespace SimEngine.Engines
                         8 c 4
                         7 6 5
                     * From top around clockwise
-                    * North      = Neighbour 2 x,   y-1
-                    * North East = Neighbour 3 x+1, y-1
-                    * East       = Neighbour 4 x+1, y
-                    * South East = Neighbour 5 x+1, y+1
-                    * South      = Neighbour 6 x,   y+1
-                    * South West = Neighbour 7 x-1, y+1
-                    * West       = Neighbour 8 x-1, y
-                    * NorthWest  = Neighbour 1 x-1, y-1
+                    * North      = Neighbor 2 x,   y-1
+                    * North East = Neighbor 3 x+1, y-1
+                    * East       = Neighbor 4 x+1, y
+                    * South East = Neighbor 5 x+1, y+1
+                    * South      = Neighbor 6 x,   y+1
+                    * South West = Neighbor 7 x-1, y+1
+                    * West       = Neighbor 8 x-1, y
+                    * NorthWest  = Neighbor 1 x-1, y-1
                     */
 
                     Cell c1 = GetCellObj(x, y, ref _cells);
@@ -151,12 +151,12 @@ namespace SimEngine.Engines
         #region Method: Summary
 
         /// <summary>
-        /// Returns asummary of engine implementation information
+        /// Returns a summary of engine implementation information
         /// </summary>
         /// <returns></returns>
         public override string Summary()
         {
-            return @"Uses a List of cells with each cell containing references to its 8 neighbours. Scans the entire List each generation. Life field wraps around at the sides, tops and corners, i.e a toroidal array";
+            return @"Uses a List of cells with each cell containing references to its 8 neighbors'. Scans the entire List each generation. Life field wraps around at the sides, tops and corners, i.e a toroidal array";
         }
 
         #endregion
@@ -231,10 +231,10 @@ namespace SimEngine.Engines
         /// <summary>
         /// Compute the next generation using the below rules
         /// 
-        /// Any live cell with fewer than two live neighbours dies, as if caused by underpopulation.
-        /// Any live cell with more than three live neighbours dies, as if by overcrowding.
-        /// Any live cell with two or three live neighbours lives on to the next generation.
-        /// Any dead cell with exactly three live neighbours becomes a live cell.
+        /// Any live cell with fewer than two live neighbors' dies, as if caused by under population.
+        /// Any live cell with more than three live neighbors' dies, as if by overcrowding.
+        /// Any live cell with two or three live neighbors' lives on to the next generation.
+        /// Any dead cell with exactly three live neighbors' becomes a live cell.
         /// </summary>
         public override void NextGeneration()
         {
@@ -247,15 +247,15 @@ namespace SimEngine.Engines
                 // Live cell
                 if (_cells[idx].Alive == 1)
                 {
-                    // Any live cell with fewer than two live neighbours dies, as if caused by underpopulation.
-                    // Any live cell with more than three live neighbours dies, as if by overcrowding.
+                    // Any live cell with fewer than two live neighbors' dies, as if caused by under population.
+                    // Any live cell with more than three live neighbors' dies, as if by overcrowding.
                     if (neighbours < 2 || neighbours > 3) _workCells[idx].Alive = 0;
-                    // Any live cell with two or three live neighbours lives on to the next generation.
+                    // Any live cell with two or three live neighbors' lives on to the next generation.
                     else _workCells[idx].Alive = 1;
                 }
                 else
                 {
-                    // Any dead cell with exactly three live neighbours becomes a live cell.
+                    // Any dead cell with exactly three live neighbors' becomes a live cell.
                     if (neighbours == 3)
                         _workCells[idx].Alive = 1;
                 }

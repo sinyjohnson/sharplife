@@ -22,12 +22,12 @@ namespace SimEngine
 
     public struct Point2D
     {
-        public int _x;
-        public int _y;
+        public int X;
+        public int Y;
         public Point2D(int x, int y)
         {
-            _x = x;
-            _y = y;
+            X = x;
+            Y = y;
         }
     }
 
